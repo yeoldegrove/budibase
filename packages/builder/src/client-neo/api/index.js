@@ -1,3 +1,4 @@
+
 import { getStateOrValue } from "./getState"
 import { setState, setStateFromBinding } from "./setState"
 import { trimSlash } from "../common/trimSlash"
@@ -8,22 +9,23 @@ import { getContext, setContext } from "./getSetContext"
 export const bbFactory = ({
   store,
   getCurrentState,
-  frontendDefinition,
+  // frontendDefinition,
   componentLibraries,
   uiFunctions,
   onScreenSlotRendered,
 }) => {
-  const relativeUrl = url => {
-    if (!frontendDefinition.appRootPath) return url
-    if (
-      url.startsWith("http:") ||
-      url.startsWith("https:") ||
-      url.startsWith("./")
-    )
-      return url
+  const relativeUrl = url => url;
+  // const relativeUrl = url => {
+  //   if (!frontendDefinition.appRootPath) return url
+  //   if (
+  //     url.startsWith("http:") ||
+  //     url.startsWith("https:") ||
+  //     url.startsWith("./")
+  //   )
+  //     return url
 
-    return frontendDefinition.appRootPath + "/" + trimSlash(url)
-  }
+  //   return frontendDefinition.appRootPath + "/" + trimSlash(url)
+  // }
 
   const apiCall = method => (url, body) =>
     fetch(relativeUrl(url), {
@@ -41,12 +43,12 @@ export const bbFactory = ({
     delete: apiCall("DELETE"),
   }
 
-  const safeCallEvent = (event, context) => {
-    const isFunction = obj =>
-      !!(obj && obj.constructor && obj.call && obj.apply)
+  // const safeCallEvent = (event, context) => {
+  //   const isFunction = obj =>
+  //     !!(obj && obj.constructor && obj.call && obj.apply)
 
-    if (isFunction(event)) event(context)
-  }
+  //   if (isFunction(event)) event(context)
+  // }
 
   return (treeNode, setupState) => {
     const attachParams = {
@@ -62,7 +64,7 @@ export const bbFactory = ({
       attachChildren: attachChildren(attachParams),
       context: treeNode.context,
       props: treeNode.props,
-      call: event(context),
+      call: safeCallEvent,
       setStateFromBinding: (binding, value) =>
         setStateFromBinding(store, binding, value),
       setState: (path, value) => setState(store, path, value),

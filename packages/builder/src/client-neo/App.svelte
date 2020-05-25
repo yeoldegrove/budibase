@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import BudibaseComponent from "./BudibaseComponent.svelte"
+  import BudibaseComponent from "./components/BudibaseComponent.svelte"
   import { appStore } from "./store";
 
   export let definition
@@ -18,6 +18,10 @@
     state.selectedComponentId = selectedComponentId;
     return state;
   });
+
+  $: {
+    $appStore
+  }
 </script>
 
 <!-- <svelte:head>

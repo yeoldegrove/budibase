@@ -54,7 +54,8 @@
   }
 
   const clickHandler = () => {
-    _bb.call(onClick)
+    // _bb.call(onClick)
+    onClick();
   }
 </script>
 
