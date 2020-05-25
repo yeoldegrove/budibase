@@ -5,7 +5,7 @@ export default {
       isCategory: true,
       children: [
         {
-          _component: "##builtin/screenslot",
+          _component: "@budibase/standard-components/screenslot",
           name: "Screenslot",
           description:
             "This component is a placeholder for the rendering of a screen within a page.",

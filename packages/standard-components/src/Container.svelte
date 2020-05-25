@@ -24,22 +24,24 @@
   }
   $: classes = `${createClasses(cssVariables)} ${className}`
 
-  $: {
-    if (containerElement) {
-      _bb.attachChildren(containerElement)
-      if (!hasLoaded) {
-        _bb.call(onLoad)
-        hasLoaded = true
-      }
-    }
-  }
+  // $: {
+  //   if (containerElement) {
+  //     _bb.attachChildren(containerElement)
+  //     if (!hasLoaded) {
+  //       _bb.call(onLoad)
+  //       hasLoaded = true
+  //     }
+  //   }
+  // }
 </script>
 
 {#if type === 'div'}
   <div
     class={classes}
     bind:this={containerElement}
-    use:cssVars={cssVariables} />
+    use:cssVars={cssVariables}>
+    <slot />
+  </div>
 {:else if type === 'header'}
   <header
     class={classes}

@@ -8,8 +8,7 @@ import { getExactComponent } from "components/userInterface/pagesParsing/searchC
 import { rename } from "components/userInterface/pagesParsing/renameScreen"
 import {
   createProps,
-  makePropsSafe,
-  getBuiltin,
+  makePropsSafe
 } from "components/userInterface/pagesParsing/createProps"
 import { fetchComponentLibDefinitions } from "../loadComponentLibraries"
 import { buildCodeForScreens } from "../buildCodeForScreens"
@@ -97,7 +96,7 @@ const setPackage = (store, initial) => async pkg => {
   initial.pages = pkg.pages
   initial.hasAppPackage = true
   initial.screens = values(pkg.screens)
-  initial.builtins = [getBuiltin("##builtin/screenslot")]
+  // initial.builtins = [getBuiltin("##builtin/screenslot")]
   initial.appInstances = pkg.application.instances
   initial.appId = pkg.application._id
 
@@ -344,9 +343,7 @@ const addChildComponent = store => (componentToAdd, presetName) => {
       return state
     }
 
-    const component = componentToAdd.startsWith("##")
-      ? getBuiltin(componentToAdd)
-      : state.components[componentToAdd]
+    const component = state.components[componentToAdd]
 
     const presetProps = presetName ? component.presets[presetName] : {}
 

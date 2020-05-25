@@ -9,7 +9,7 @@
 
   let containerElement
 
-  $: containerElement && !text && _bb.attachChildren(containerElement)
+  // $: containerElement && !text && _bb.attachChildren(containerElement)
   $: style = buildStyle({ "font-family": fontFamily, color })
   // $: console.log("HEADING", color)
 </script>

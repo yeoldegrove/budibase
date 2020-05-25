@@ -3,15 +3,15 @@ import { TYPE_MAP } from "./types"
 import { assign } from "lodash"
 import { uuid } from "builderStore/uuid"
 
-export const getBuiltin = _component => {
-  const { props } = createProps({ _component })
+// export const getBuiltin = _component => {
+//   const { props } = createProps({ _component })
 
-  return {
-    _component,
-    name: "Screenslot",
-    props,
-  }
-}
+//   return {
+//     _component,
+//     name: "Screenslot",
+//     props,
+//   }
+// }
 
 /**
  * @param {object} componentDefinition - component definition from a component library

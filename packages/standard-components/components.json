@@ -461,5 +461,11 @@
 		"props": {
 			"className": "string"
 		}
+	},
+	"screenslot": {
+		"name": "ScreenSlot",
+		"description": "Where the screens in your app will go",
+		"props": {
+		}
 	}
 }
