@@ -34,7 +34,7 @@
   .nav {
     overflow: auto;
     flex: 0 1 auto;
-    width: 275px;
+    width: 300px;
     height: 100%;
   }
 </style>

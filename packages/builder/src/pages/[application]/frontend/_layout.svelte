@@ -54,9 +54,7 @@
 
     <div class="pages-list-container">
       <div class="nav-header">
-        <span class="navigator-title">Navigator</span>
-        <div class="border-line" />
-
+        <span class="navigator-title">Navigate</span>
         <span class="components-nav-page">Pages</span>
       </div>
 
@@ -65,11 +63,7 @@
       </div>
     </div>
 
-    <div class="border-line" />
-
     <PageLayout layout={$store.pages[$store.currentPageName]} />
-
-    <div class="border-line" />
 
     <div class="components-list-container">
       <div class="nav-group-header">
@@ -128,20 +122,9 @@
 
   .root {
     display: grid;
-    grid-template-columns: 275px 1fr 275px;
-    height: 100%;
+    grid-template-columns: 300px 1fr 300px;
     width: 100%;
-    background: #fafafa;
-  }
-
-  @media only screen and (min-width: 1800px) {
-    .root {
-      display: grid;
-      grid-template-columns: 300px 1fr 300px;
-      height: 100%;
-      width: 100%;
-      background: #fafafa;
-    }
+    background: var(--grey-light);
   }
 
   .ui-nav {
@@ -159,20 +142,16 @@
     margin: 40px;
     background: #fff;
     border-radius: 5px;
-    box-shadow: 0 0px 6px rgba(0, 0, 0, 0.05);
   }
 
   .components-pane {
     grid-column: 3;
     background-color: var(--white);
-    min-height: 0px;
-    overflow-y: scroll;
   }
 
   .components-nav-page {
     font-size: 13px;
-    color: #000333;
-    text-transform: uppercase;
+    color: var(--ink);
     padding-left: 20px;
     margin-top: 20px;
     font-weight: 600;
@@ -182,8 +161,7 @@
 
   .components-nav-header {
     font-size: 13px;
-    color: #000333;
-    text-transform: uppercase;
+    color: var(--ink);
     margin-top: 20px;
     font-weight: 600;
     opacity: 0.4;
@@ -235,13 +213,10 @@
   }
 
   .navigator-title {
-    font-size: 14px;
-    color: var(--secondary100);
-    font-weight: 600;
-    text-transform: uppercase;
+    font-size: 18px;
+    color: var(--ink);
+    font-weight: bold;
     padding: 0 20px 20px 20px;
-    line-height: 1rem !important;
-    letter-spacing: 1px;
   }
 
   .border-line {
