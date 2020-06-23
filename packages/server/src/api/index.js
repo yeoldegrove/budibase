@@ -101,6 +101,6 @@ router.use(accesslevelRoutes.allowedMethods())
 router.use(staticRoutes.routes())
 router.use(staticRoutes.allowedMethods())
 
-router.redirect("/", "/_builder")
+// router.redirect("/", "/_builder")
 
 module.exports = router
