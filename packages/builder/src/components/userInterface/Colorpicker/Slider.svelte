@@ -10,7 +10,7 @@
   let slider;
   let sliderWidth = 0;
 
-  function handleClick(mouseX) {
+  function onSliderChange(mouseX, isDrag = false) {
     const { left, width } = slider.getBoundingClientRect();
     let clickPosition = mouseX - left;
 
@@ -21,7 +21,8 @@
         type === "hue"
           ? 360 * percentageClick
           : percentageClick;
-      dispatch("change", value);
+      
+      dispatch("change", {color: value, isDrag});
     }
   }
 
@@ -36,7 +37,7 @@
     position: relative;
     align-self: center;
     height: 8px;
-    width: 185px;
+    width: 150px;
     border-radius: 10px;
     margin: 10px 0px;
     border: 1px solid #e8e8ef;
@@ -75,13 +76,14 @@
 <div
   bind:this={slider}
   bind:clientWidth={sliderWidth}
-  on:click={event => handleClick(event.clientX)}
+  on:click={event => onSliderChange(event.clientX)}
   class="color-format-slider"
   class:hue={type === 'hue'}
   class:alpha={type === 'alpha'}>
   <div
     use:dragable
-    on:drag={e => handleClick(e.detail)}
+    on:drag={e => onSliderChange(e.detail, true)}
+    on:dragend
     class="slider-thumb"
     {style} />
 </div>
