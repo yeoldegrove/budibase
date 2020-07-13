@@ -180,6 +180,8 @@ export default {
       "process.env.NODE_ENV": JSON.stringify(
         production ? "production" : "development"
       ),
+      "process.env.POSTHOG_TOKEN": JSON.stringify("Oeq9KzIpZYaNsXIvHw5QTZWNpfiG_EOjAOpjTyAiitY"),
+      "process.env.POSTHOG_URL": JSON.stringify("https://posthog.budi.live"),
     }),
 
     svelte({

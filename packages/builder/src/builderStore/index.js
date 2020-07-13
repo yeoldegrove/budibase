@@ -11,9 +11,10 @@ export const workflowStore = getWorkflowStore()
 export const initialise = async () => {
   try {
     if (process.env.NODE_ENV === "production") {
-      posthog.init("Oeq9KzIpZYaNsXIvHw5QTZWNpfiG_EOjAOpjTyAiitY", {
-        api_host: "https://posthog.budi.live"
+      posthog.init(process.env.POSTHOG_KEY, {
+        api_host: process.env.POSTHOG_URL
       });
+      
     }
   } catch (err) {
     console.log(err)
