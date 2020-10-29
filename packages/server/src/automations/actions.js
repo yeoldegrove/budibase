@@ -3,6 +3,7 @@ const createRow = require("./steps/createRow")
 const updateRow = require("./steps/updateRow")
 const deleteRow = require("./steps/deleteRow")
 const createUser = require("./steps/createUser")
+const queryTable = require("./steps/queryTable")
 const outgoingWebhook = require("./steps/outgoingWebhook")
 const environment = require("../environment")
 const download = require("download")
@@ -23,6 +24,7 @@ const BUILTIN_ACTIONS = {
   DELETE_ROW: deleteRow.run,
   CREATE_USER: createUser.run,
   OUTGOING_WEBHOOK: outgoingWebhook.run,
+  QUERY_TABLE: queryTable.run,
 }
 const BUILTIN_DEFINITIONS = {
   SEND_EMAIL: sendEmail.definition,
@@ -31,6 +33,7 @@ const BUILTIN_DEFINITIONS = {
   DELETE_ROW: deleteRow.definition,
   CREATE_USER: createUser.definition,
   OUTGOING_WEBHOOK: outgoingWebhook.definition,
+  QUERY_TABLE: queryTable.definition,
 }
 
 let AUTOMATION_BUCKET = environment.AUTOMATION_BUCKET

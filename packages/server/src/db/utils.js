@@ -1,5 +1,5 @@
 const newid = require("./newid")
-
+const lunr = require("lunr")
 const UNICODE_MAX = "\ufff0"
 const SEPARATOR = "_"
 
@@ -179,4 +179,18 @@ exports.generateWebhookID = () => {
  */
 exports.getWebhookParams = (webhookId = null, otherProps = {}) => {
   return getDocParams(DocumentTypes.WEBHOOK, webhookId, otherProps)
+}
+
+exports.filterWithLunr = async (db, tableId, rows, filter) => {
+  const table = await db.get(tableId)
+  const index = lunr(function() {
+    this.ref("_id")
+    for (const field of Object.keys(table.schema)) {
+      this.field(field)
+    }
+    rows.forEach(function(doc) {
+      this.add(doc)
+    }, this)
+  })
+  return index.search(filter).map(res => rows.find(row => row._id === res.ref))
 }

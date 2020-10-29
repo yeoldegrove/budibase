@@ -4,6 +4,7 @@
   import CreateColumnButton from "./buttons/CreateColumnButton.svelte"
   import CreateViewButton from "./buttons/CreateViewButton.svelte"
   import ExportButton from "./buttons/ExportButton.svelte"
+  import Searchbox from "./Searchbox.svelte"
   import * as api from "./api"
   import Table from "./Table.svelte"
 
@@ -20,12 +21,20 @@
   // Fetch rows for specified table
   $: {
     if ($backendUiStore.selectedView?.name?.startsWith("all_")) {
-      loading = true
-      api.fetchDataForView($backendUiStore.selectedView).then(rows => {
-        data = rows || []
-        loading = false
-      })
+      fetch()
     }
+  }
+
+  const fetch = (searchExpression) => {
+    loading = true
+    api.fetchDataForView($backendUiStore.selectedView, searchExpression).then(rows => {
+      data = rows || []
+      loading = false
+    })
+  }
+
+  const onSearch = (ev) => {
+    fetch(ev.detail)
   }
 </script>
 
@@ -35,5 +44,6 @@
     <CreateRowButton />
     <CreateViewButton />
     <ExportButton view={tableView} />
+    <Searchbox on:search={onSearch} />
   {/if}
 </Table>

@@ -6,6 +6,7 @@ const {
   generateRowID,
   DocumentTypes,
   SEPARATOR,
+  filterWithLunr,
 } = require("../../db/utils")
 const { cloneDeep } = require("lodash")
 
@@ -193,11 +194,11 @@ exports.fetchTableRows = async function(ctx) {
       include_docs: true,
     })
   )
-  ctx.body = response.rows.map(row => row.doc)
-  ctx.body = await linkRows.attachLinkInfo(
-    instanceId,
-    response.rows.map(row => row.doc)
-  )
+  const allRows = response.rows.map(row => row.doc)
+  const rows = ctx.query.filter
+    ? await filterWithLunr(db, ctx.params.tableId, allRows, ctx.query.filter)
+    : allRows
+  ctx.body = await linkRows.attachLinkInfo(instanceId, rows)
 }
 
 exports.search = async function(ctx) {

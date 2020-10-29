@@ -19,8 +19,9 @@ export async function deleteRow(row) {
   return response
 }
 
-export async function fetchDataForView(view) {
-  const FETCH_ROWS_URL = `/api/views/${view.name}`
+export async function fetchDataForView(view, filter) {
+  const filterParam = filter ? `?filter=${encodeURIComponent(filter)}` : ""
+  const FETCH_ROWS_URL = `/api/views/${view.name}${filterParam}`
 
   const response = await api.get(FETCH_ROWS_URL)
   return await response.json()

@@ -2,6 +2,7 @@ const handlebars = require("handlebars")
 const actions = require("./actions")
 const logic = require("./logic")
 const automationUtils = require("./automationUtils")
+const cloneDeep = require("lodash/cloneDeep")
 
 handlebars.registerHelper("object", value => {
   return new handlebars.SafeString(JSON.stringify(value))
@@ -40,6 +41,17 @@ class Orchestrator {
     this._automation = automation
   }
 
+  spawnFromGenerator(generatorOutputs) {
+    const newOrchestrator = new Orchestrator(
+      cloneDeep(this._automation),
+      cloneDeep(this._context.trigger)
+    )
+    newOrchestrator._instanceId = this._instanceId
+    newOrchestrator._context = cloneDeep(this._context)
+    newOrchestrator._context.steps.push(generatorOutputs)
+    return newOrchestrator
+  }
+
   async getStepFunctionality(type, stepId) {
     let step = null
     if (type === "ACTION") {
@@ -55,7 +67,15 @@ class Orchestrator {
 
   async execute() {
     let automation = this._automation
-    for (let step of automation.definition.steps) {
+    // steps contains the trigger (so theres always at least one)
+    const startingPosition = this._context.steps.length - 1
+
+    for (
+      let stepNumber = startingPosition;
+      stepNumber < automation.definition.steps.length;
+      stepNumber++
+    ) {
+      const step = automation.definition.steps[stepNumber]
       let stepFn = await this.getStepFunctionality(step.type, step.stepId)
       step.inputs = recurseMustache(step.inputs, this._context)
       step.inputs = automationUtils.cleanInputValues(
@@ -69,15 +89,32 @@ class Orchestrator {
           instanceId: this._instanceId,
           apiKey: automation.apiKey,
         })
+
         if (step.stepId === FILTER_STEP_ID && !outputs.success) {
           break
         }
+
+        if (isGenerator(outputs)) {
+          for await (const spawnedOutputs of outputs) {
+            const spawnedOrchectrator = this.spawnFromGenerator(spawnedOutputs)
+            await spawnedOrchectrator.execute()
+          }
+          // automation is continued by children only
+          break
+        }
+
         this._context.steps.push(outputs)
       } catch (err) {
         console.error(`Automation error - ${step.stepId} - ${err}`)
       }
     }
   }
+}
+
+function isGenerator(obj) {
+  return (
+    obj && typeof obj.next === "function" && typeof obj.throw === "function"
+  )
 }
 
 // callback is required for worker-farm to state that the worker thread has completed
