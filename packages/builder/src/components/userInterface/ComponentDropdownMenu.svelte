@@ -1,5 +1,6 @@
 <script>
   import { goto } from "@sveltech/routify"
+  import { notifier } from "builderStore/store/notifications"
   import { store } from "builderStore"
   import { getComponentDefinition } from "builderStore/storeUtils"
   import ConfirmDialog from "components/common/ConfirmDialog.svelte"
@@ -83,6 +84,7 @@
       }
 
       saveCurrentPreviewItem(state)
+      notifier.success(`${component} component deleted successfully.`)
       return state
     })
   }
@@ -99,7 +101,9 @@
 </script>
 
 <div bind:this={anchor} on:click|stopPropagation>
-  <div class="icon" on:click={dropdown.show}><i class="ri-more-line" /></div>
+  <div class="icon" on:click={dropdown.show}>
+    <i class="ri-more-line" />
+  </div>
   <DropdownMenu bind:this={dropdown} width="170px" {anchor} align="left">
     <DropdownContainer on:click={hideDropdown}>
       <DropdownItem

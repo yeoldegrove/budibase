@@ -1,7 +1,7 @@
 <script>
   import { store, backendUiStore } from "builderStore"
   import { map, join } from "lodash/fp"
-  import iframeTemplate from "./iframeTemplate"
+  import iframeTemplate from "./iframeTemplate/preview.html"
   import { pipe } from "../../../helpers"
 
   let iframe
@@ -143,10 +143,10 @@
     styles = styles
   }
 
-  $: stylesheetLinks = pipe($store.pages.stylesheets, [
-    map(s => `<link rel="stylesheet" href="${s}"/>`),
-    join("\n"),
-  ])
+  $: stylesheetLinks = pipe(
+    $store.pages.stylesheets,
+    [map(s => `<link rel="stylesheet" href="${s}"/>`), join("\n")]
+  )
 
   $: screensExist =
     $store.currentPreviewItem._screens &&

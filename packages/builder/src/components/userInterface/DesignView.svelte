@@ -1,7 +1,9 @@
 <script>
   import { onMount } from "svelte"
+  import { TextButton } from "@budibase/bbui"
   import PropertyGroup from "./PropertyGroup.svelte"
   import FlatButtonGroup from "./FlatButtonGroup.svelte"
+  import { notifier } from "builderStore/store/notifications"
 
   export let panelDefinition = {}
   export let componentInstance = {}
@@ -11,6 +13,7 @@
   let selectedCategory = "normal"
   let propGroup = null
   let currentGroup
+  let active
 
   const getProperties = name => panelDefinition[name]
 
@@ -25,9 +28,19 @@
   ]
 
   $: propertyGroupNames = panelDefinition ? Object.keys(panelDefinition) : []
+
+  function protractorMode() {
+    document.querySelector("iframe").contentWindow.postMessage("protractorMode")
+    notifier.success("Protractor mode activated.")
+    active = true
+  }
 </script>
 
 <div class="design-view-container">
+  <TextButton {active} text on:click={protractorMode}>
+    <i class="ri-ruler-2-line" style="margin-right: 5px;" />
+    Protractor Mode
+  </TextButton>
   <div class="design-view-state-categories">
     <FlatButtonGroup value={selectedCategory} {buttonProps} {onChange} />
   </div>

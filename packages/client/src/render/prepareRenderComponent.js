@@ -33,7 +33,11 @@ export const prepareRenderComponent = ({
 
     let [componentName] = props._component.match(/[a-z]*$/)
     if (props._id && thisNode.rootElement) {
-      thisNode.rootElement.classList.add(`${componentName}-${props._id}`)
+      thisNode.rootElement.classList.add(
+        `${componentName}-${props._id}`,
+        "budi-component"
+      )
+      thisNode.rootElement.setAttribute("data-id", props._id)
     }
 
     // make this node listen to the store

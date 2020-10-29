@@ -35,7 +35,11 @@
 
   const capitalise = s => s.substring(0, 1).toUpperCase() + s.substring(1)
   const get_name = s => (!s ? "" : last(s.split("/")))
-  const get_capitalised_name = name => pipe(name, [get_name, capitalise])
+  const get_capitalised_name = name =>
+    pipe(
+      name,
+      [get_name, capitalise]
+    )
   const isScreenslot = name => name === "##builtin/screenslot"
 
   const selectComponent = component => {
@@ -118,8 +122,23 @@
       return s
     })
   }
+
+  function handlePreviewHover(e) {
+    if (e.data.type === "selected") {
+      const component = components.find(comp => comp._id === e.data.id)
+      if (!component) return
+      // Set current component
+      store.selectComponent(component)
+      // Get ID path
+      const path = store.getPathToComponent(component)
+      $goto(`./:page/:screen/${path}`)
+    }
+    if (e.data.type === "click") {
+    }
+  }
 </script>
 
+<svelte:window on:message={handlePreviewHover} />
 <ul>
   {#each components as component, index (component._id)}
     <li on:click|stopPropagation={() => selectComponent(component)}>
