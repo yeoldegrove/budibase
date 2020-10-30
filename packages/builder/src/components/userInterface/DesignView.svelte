@@ -31,6 +31,11 @@
 
   function protractorMode() {
     document.querySelector("iframe").contentWindow.postMessage("protractorMode")
+    if (active) {
+      notifier.info("Protractor mode deactivated.")
+      active = false
+      return
+    }
     notifier.success("Protractor mode activated.")
     active = true
   }
