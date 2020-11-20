@@ -14,6 +14,7 @@
 
   const deleteScreen = () => {
     const screenToDelete = $allScreens.find(scr => scr._id === screen)
+
     store.actions.screens.delete(screenToDelete)
     store.actions.routing.fetch()
     // update the page if required

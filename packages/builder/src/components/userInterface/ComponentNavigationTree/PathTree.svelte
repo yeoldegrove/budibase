@@ -39,7 +39,9 @@
       text={url === '/' ? 'Home' : url}
       withArrow={route.subpaths}
       on:click={() => changeScreen(screenId)}>
-      <ScreenDropdownMenu screen={screenId} />
+      {#if url !== "/"}
+        <ScreenDropdownMenu screen={screenId} />
+      {/if}
     </NavItem>
     {#if selectedScreen?._id === screenId}
       <ComponentsTree
