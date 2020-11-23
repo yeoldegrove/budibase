@@ -24,7 +24,7 @@ const {
   downloadExtractComponentLibraries,
 } = require("../../utilities/createAppPackage")
 const { MAIN, UNAUTHENTICATED, PageTypes } = require("../../constants/pages")
-const { HOME_SCREEN } = require("../../constants/screens")
+const { HOME_SCREEN, LOGIN_SCREEN } = require("../../constants/screens")
 const { cloneDeep } = require("lodash/fp")
 
 const APP_PREFIX = DocumentTypes.APP + SEPARATOR
@@ -204,7 +204,7 @@ const createEmptyAppPackage = async (ctx, app) => {
 
   const homeScreen = cloneDeep(HOME_SCREEN)
   homeScreen._id = generateScreenID(mainPage._id)
-  await db.bulkDocs([mainPage, unauthPage, homeScreen])
+  await db.bulkDocs([mainPage, unauthPage, homeScreen, loginScreen])
 
   await compileStaticAssetsForPage(app._id, "main", {
     page: mainPage,
