@@ -3,6 +3,7 @@
   import { createEventDispatcher } from "svelte"
   import { store, backendUiStore, currentAsset } from "builderStore"
   import fetchBindableProperties from "../../builderStore/fetchBindableProperties"
+  import { TableNames } from "../../constants"
 
   const dispatch = createEventDispatcher()
   let anchorRight, dropdownRight
@@ -13,6 +14,9 @@
     dispatch("change", selected)
     dropdownRight.hide()
   }
+
+  $: bindableProperties = getBindableProperties()
+  $: userBindables = getUserBindables()
 
   $: tables = $backendUiStore.tables.map(m => ({
     label: m.name,
@@ -31,15 +35,8 @@
     return [...acc, ...viewsArr]
   }, [])
 
-  $: bindableProperties = fetchBindableProperties({
-    componentInstanceId: $store.selectedComponentId,
-    components: $store.components,
-    screen: $currentAsset,
-    tables: $backendUiStore.tables,
-  })
-
   $: links = bindableProperties
-    .filter(x => x.fieldSchema?.type === "link")
+    .filter(x => x.fieldSchema?.type === "link" && x.table !== TableNames.USERS)
     .map(property => {
       return {
         providerId: property.instance._id,
@@ -50,6 +47,51 @@
         type: "link",
       }
     })
+
+  $: userLinks = userBindables.map(property => {
+    return {
+      providerId: "user",
+      label: property.readableBinding,
+      fieldName: property.fieldSchema.name,
+      name: `all_${property.fieldSchema.tableId}`,
+      tableId: property.fieldSchema.tableId,
+      type: "link",
+    }
+  })
+
+  const getBindableProperties = () => {
+    return fetchBindableProperties({
+      componentInstanceId: $store.selectedComponentId,
+      components: $store.components,
+      screen: $currentAsset,
+      tables: $backendUiStore.tables,
+    })
+  }
+
+  const getUserBindables = () => {
+    const usersTable = $backendUiStore.tables.find(
+      table => table._id === TableNames.USERS
+    )
+    console.log(usersTable)
+    const relationshipFields = Object.entries(usersTable.schema).filter(
+      ([key, schema]) => {
+        return schema.type === "link"
+      }
+    )
+    return relationshipFields.map(([key, schema]) => {
+      return {
+        type: "context",
+        fieldSchema: schema,
+        instance: {},
+        // how the binding expression persists, and is used in the app at runtime
+        runtimeBinding: `user.${key}`,
+        // how the binding expressions looks to the user of the builder
+        readableBinding: `user.${key}`,
+        // table / view info
+        table: TableNames.USERS,
+      }
+    })
+  }
 </script>
 
 <div
@@ -61,6 +103,19 @@
 </div>
 <DropdownMenu bind:this={dropdownRight} anchor={anchorRight}>
   <div class="dropdown">
+    <div class="title">
+      <Heading extraSmall>Logged In User</Heading>
+    </div>
+    <ul>
+      {#each userLinks as link}
+        <li
+          class:selected={value === link}
+          on:click={() => handleSelected(link)}>
+          {link.label}
+        </li>
+      {/each}
+    </ul>
+    <hr />
     <div class="title">
       <Heading extraSmall>Tables</Heading>
     </div>

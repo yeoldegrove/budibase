@@ -3,11 +3,12 @@
   import { setContext, onMount } from "svelte"
   import Component from "./Component.svelte"
   import SDK from "../sdk"
-  import { createDataStore, initialise, screenStore } from "../store"
+  import { createDataStore, initialise, screenStore, authStore } from "../store"
+  import DataProvider from "./DataProvider.svelte"
 
   // Provide contexts
   setContext("sdk", SDK)
-  setContext("component", writable({}))
+  setContext("component", writable({ id: "user" }))
   setContext("data", createDataStore())
 
   let loaded = false
@@ -20,5 +21,7 @@
 </script>
 
 {#if loaded && $screenStore.activeLayout}
-  <Component definition={$screenStore.activeLayout.props} />
+  <DataProvider row={$authStore}>
+    <Component definition={$screenStore.activeLayout.props} />
+  </DataProvider>
 {/if}

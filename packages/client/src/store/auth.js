@@ -18,7 +18,7 @@ const createAuthStore = () => {
   const logIn = async ({ email, password }) => {
     const user = await API.logIn({ email, password })
     if (!user.error) {
-      store.set(user.token)
+      store.set(user)
       await initialise()
       goToDefaultRoute()
     }
