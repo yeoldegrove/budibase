@@ -11,6 +11,7 @@
   import { DropdownMenu } from "@budibase/bbui"
   import BindingDropdown from "components/userInterface/BindingDropdown.svelte"
   import { onMount } from "svelte"
+  import { TableNames } from "../../constants"
 
   export let label = ""
   export let bindable = true
@@ -32,12 +33,29 @@
 
   function getBindableProperties() {
     // Get all bindableProperties
-    bindableProperties = fetchBindableProperties({
+    const normalBindables = fetchBindableProperties({
       componentInstanceId: $store.selectedComponentId,
       components: $store.components,
       screen: $currentAsset,
       tables: $backendUiStore.tables,
     })
+
+    // Extract bindable properties on the logged in user
+    const usersTable = $backendUiStore.tables.find(
+      table => table._id === TableNames.USERS
+    )
+    const userBindables = Object.entries(usersTable.schema).map(
+      ([key, schema]) => ({
+        type: "user",
+        fieldSchema: schema,
+        instance: { _id: "user" },
+        runtimeBinding: `user.${key}`,
+        readableBinding: `${key}`,
+        table: TableNames.USERS,
+      })
+    )
+
+    bindableProperties = [...userBindables, ...normalBindables]
   }
 
   function replaceBindings(textWithBindings) {

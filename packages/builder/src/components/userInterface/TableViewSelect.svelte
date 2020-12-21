@@ -16,7 +16,6 @@
   }
 
   $: bindableProperties = getBindableProperties()
-  $: userBindables = getUserBindables()
 
   $: tables = $backendUiStore.tables.map(m => ({
     label: m.name,
@@ -37,60 +36,46 @@
 
   $: links = bindableProperties
     .filter(x => x.fieldSchema?.type === "link" && x.table !== TableNames.USERS)
-    .map(property => {
-      return {
-        providerId: property.instance._id,
-        label: property.readableBinding,
-        fieldName: property.fieldSchema.name,
-        name: `all_${property.fieldSchema.tableId}`,
-        tableId: property.fieldSchema.tableId,
-        type: "link",
-      }
-    })
+    .map(mapBindableToDatasource)
 
-  $: userLinks = userBindables.map(property => {
-    return {
-      providerId: "user",
-      label: property.readableBinding,
-      fieldName: property.fieldSchema.name,
-      name: `all_${property.fieldSchema.tableId}`,
-      tableId: property.fieldSchema.tableId,
-      type: "link",
-    }
+  $: userLinks = bindableProperties
+    .filter(x => x.table === TableNames.USERS)
+    .map(mapBindableToDatasource)
+
+  const mapBindableToDatasource = bindable => ({
+    providerId: bindable.instance._id,
+    label: bindable.readableBinding,
+    fieldName: bindable.fieldSchema.name,
+    name: `all_${bindable.fieldSchema.tableId}`,
+    tableId: bindable.fieldSchema.tableId,
+    type: "link",
   })
 
   const getBindableProperties = () => {
-    return fetchBindableProperties({
+    // Get normal bindable properties
+    const bindables = fetchBindableProperties({
       componentInstanceId: $store.selectedComponentId,
       components: $store.components,
       screen: $currentAsset,
       tables: $backendUiStore.tables,
     })
-  }
 
-  const getUserBindables = () => {
+    // Extract bindable properties on the logged in user
     const usersTable = $backendUiStore.tables.find(
       table => table._id === TableNames.USERS
     )
-    console.log(usersTable)
-    const relationshipFields = Object.entries(usersTable.schema).filter(
-      ([key, schema]) => {
-        return schema.type === "link"
-      }
-    )
-    return relationshipFields.map(([key, schema]) => {
-      return {
-        type: "context",
+    const relationshipFields = Object.entries(usersTable.schema)
+      .filter(entry => entry[1].type === "link")
+      .map(([key, schema]) => ({
+        type: "user",
         fieldSchema: schema,
-        instance: {},
-        // how the binding expression persists, and is used in the app at runtime
+        instance: { _id: "user" },
         runtimeBinding: `user.${key}`,
-        // how the binding expressions looks to the user of the builder
-        readableBinding: `user.${key}`,
-        // table / view info
+        readableBinding: `${key}`,
         table: TableNames.USERS,
-      }
-    })
+      }))
+
+    return [...bindables, ...relationshipFields]
   }
 </script>
 
@@ -104,7 +89,7 @@
 <DropdownMenu bind:this={dropdownRight} anchor={anchorRight}>
   <div class="dropdown">
     <div class="title">
-      <Heading extraSmall>Logged In User</Heading>
+      <Heading extraSmall>Current User</Heading>
     </div>
     <ul>
       {#each userLinks as link}

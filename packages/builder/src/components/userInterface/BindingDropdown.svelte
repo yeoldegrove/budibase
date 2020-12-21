@@ -27,13 +27,21 @@
     close()
   }
 
-  $: ({ instance, context } = groupBy("type", bindableProperties))
+  $: ({ instance, context, user } = groupBy("type", bindableProperties))
 </script>
 
 <div class="container" data-cy="binding-dropdown-modal">
   <div class="list">
     <Heading extraSmall>Objects</Heading>
     <Spacer medium />
+    {#if user}
+      <Heading extraSmall>Current User</Heading>
+      <ul>
+        {#each user as { readableBinding }}
+          <li on:click={() => addToText(readableBinding)}>{readableBinding}</li>
+        {/each}
+      </ul>
+    {/if}
     {#if context}
       <Heading extraSmall>Tables</Heading>
       <ul>
