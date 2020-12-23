@@ -1,11 +1,14 @@
 import * as API from "../api"
 import { getAppId } from "../utils/getAppId"
-import { writable } from "svelte/store"
 import { initialise } from "./initialise"
 import { routeStore } from "./routes"
+import { localStorageStore } from "./localStorage"
 
 const createAuthStore = () => {
-  const store = writable("")
+  const store = localStorageStore({
+    loggedIn: false,
+    user: {},
+  })
 
   const goToDefaultRoute = () => {
     // Setting the active route forces an update of the active screen ID,
@@ -18,13 +21,19 @@ const createAuthStore = () => {
   const logIn = async ({ email, password }) => {
     const user = await API.logIn({ email, password })
     if (!user.error) {
-      store.set(user)
+      store.set({
+        user,
+        loggedIn: true,
+      })
       await initialise()
       goToDefaultRoute()
     }
   }
   const logOut = async () => {
-    store.set("")
+    store.set({
+      loggedIn: false,
+      user: {},
+    })
     const appId = getAppId()
     if (appId) {
       for (let environment of ["local", "cloud"]) {
