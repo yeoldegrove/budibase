@@ -1,6 +1,6 @@
 build:
   docker:
-    web: Dockerfile.heroku
+    web: hosting/Dockerfile.heroku
 run:
   web: docker run -v /var/run/docker.sock:/var/run/docker.sock budiheroku
 
