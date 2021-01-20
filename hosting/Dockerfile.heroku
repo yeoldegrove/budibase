@@ -1,0 +1,19 @@
+FROM docker/compose
+
+# ENV COUCH_DB_URL=https://couchdb.budi.live:5984
+# ENV BUDIBASE_ENVIRONMENT=PRODUCTION
+
+# copy files and install dependencies
+COPY docker-compose.yaml .
+COPY hosting.properties .
+COPY envoy.yaml .
+
+# VOLUME "/var/run/docker.sock"
+# VOLUME "/var/tmp/"
+
+# EXPOSE 10000
+
+CMD ["docker-compose", "--env-file", "hosting.properties", "up"]
+# CMD ["docker", "run", "-itd", "-v", "/var/run/docker.sock:/var/run/docker.sock", "-f", "docker-compose.yaml"]
+# CMD ["docker-compose", "--env-file", "hosting.properties", "up"]
+# CMD docker run -itd -v /var/run/docker.sock:/var/run/docker.sock -v /root/test/:/var/tmp/ docker/compose:1.24.1  -f /var/tmp/docker-compose.yaml up -d

@@ -1,0 +1,41 @@
+{
+    "name": "Budibase",
+    "website": "https://www.budibase.com",
+    "repository": "https://github.com/Budibase/budibase",
+    "logo": "https://d33wubrfki0l68.cloudfront.net/e53fa281e5b748aa0713014821f212695a32319e/471a1/img/logo/budibase-logo.svg",
+    "keywords": ["node", "lowcode", "couchdb"],
+    "stack": "container",
+    "buildpacks": [],
+    "addons": [],
+    "formation": {
+        "web": {
+            "quantity": 1
+        }
+    },
+    "env": {
+      "JWT_SECRET": {
+        "description": "A secret key for verifying the integrity of signed cookies.",
+        "generator": "secret"
+      },
+      "HOSTING_KEY": {
+        "description": "The number of processes to run.",
+        "value": ""
+      },
+      "MINIO_ACCESS_KEY": {
+        "description": "The number of processes to run.",
+        "value": ""
+      },
+      "MINIO_SECRET_KEY": {
+        "description": "The number of processes to run.",
+        "value": ""
+      },
+      "COUCH_DB_USER": {
+        "description": "The number of processes to run.",
+        "value": ""
+      },
+      "COUCH_DB_PASSWORD": {
+        "description": "The number of processes to run.",
+        "value": ""
+      }
+    }
+}

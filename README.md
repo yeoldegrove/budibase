@@ -53,6 +53,8 @@
   <a href="https://discord.gg/rCYayfe">Discord</a>
 </h3>
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg?template=https://github.com/Budibase/budibase)](https://heroku.com/deploy)
+
 
 ## ✨ Features
 When other platforms chose the closed source route, we decided to go open source. When other platforms chose cloud builders, we decided a local builder offered the better developer experience. We like to do things differently at Budibase. 

@@ -52,18 +52,18 @@ services:
       timeout: 20s
       retries: 3
 
-  proxy-service:
-    image: envoyproxy/envoy:v1.16-latest
-    volumes:
-      - ./envoy.yaml:/etc/envoy/envoy.yaml
-    ports:
-      - "${MAIN_PORT}:10000"
-      - "9901:9901"
-    depends_on:
-      - minio-service
-      - worker-service
-      - app-service
-      - couchdb-service
+  # proxy-service:
+  #   image: envoyproxy/envoy:v1.16-latest
+  #   volumes:
+  #     - ./envoy.yaml:/etc/envoy/envoy.yaml
+  #   ports:
+  #     - "${MAIN_PORT}:10000"
+  #     - "9901:9901"
+  #   depends_on:
+  #     - minio-service
+  #     - worker-service
+  #     - app-service
+  #     - couchdb-service
 
   couchdb-service:
     image: apache/couchdb:3.0
