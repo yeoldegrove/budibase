@@ -112,6 +112,13 @@
       disabled={primaryDisplay}
       thin
       text="Required" />
+
+      <Toggle
+        checked={true}
+        on:change={() => {}}
+        disabled={false}
+        thin
+        text="Searchable" />
   {/if}
 
   {#if field.type !== 'link'}
