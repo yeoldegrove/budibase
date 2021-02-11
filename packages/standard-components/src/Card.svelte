@@ -37,12 +37,14 @@
   <div class="content">
     <h2 class="heading">{heading}</h2>
     <h4 class="text">{description}</h4>
-    <a
-      use:linkable
-      style="--linkColor: {linkColor}; --linkHoverColor: {linkHoverColor}"
-      href={linkUrl}>
-      {linkText}
-    </a>
+    {#if linkUrl}
+      <a
+        use:linkable
+        style="--linkColor: {linkColor}; --linkHoverColor: {linkHoverColor}"
+        href={linkUrl}>
+        {linkText}
+      </a>
+    {/if}
   </div>
 </div>
 
