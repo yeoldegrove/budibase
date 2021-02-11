@@ -24,20 +24,21 @@ class Preprocessor {
 }
 
 module.exports.processors = [
-  new Preprocessor(PreprocessorNames.SWAP_TO_DOT, statement => {
-    let startBraceIdx = statement.indexOf("[")
-    let lastIdx = 0
-    while (startBraceIdx !== -1) {
-      // if the character previous to the literal specifier is alpha-numeric this should happen
-      if (isAlphaNumeric(statement.charAt(startBraceIdx - 1))) {
-        statement = swapStrings(statement, startBraceIdx + lastIdx, 1, ".[")
-      }
-      lastIdx = startBraceIdx + 1
-      const nextBraceIdx = statement.substring(lastIdx + 1).indexOf("[")
-      startBraceIdx = nextBraceIdx > 0 ? lastIdx + 1 + nextBraceIdx : -1
-    }
-    return statement
-  }),
+  // TODO: THIS IS COMMENTED OUT FOR DEMO, PUT BACK AFTER
+  // new Preprocessor(PreprocessorNames.SWAP_TO_DOT, statement => {
+  //   let startBraceIdx = statement.indexOf("[")
+  //   let lastIdx = 0
+  //   while (startBraceIdx !== -1) {
+  //     // if the character previous to the literal specifier is alpha-numeric this should happen
+  //     if (isAlphaNumeric(statement.charAt(startBraceIdx - 1))) {
+  //       statement = swapStrings(statement, startBraceIdx + lastIdx, 1, ".[")
+  //     }
+  //     lastIdx = startBraceIdx + 1
+  //     const nextBraceIdx = statement.substring(lastIdx + 1).indexOf("[")
+  //     startBraceIdx = nextBraceIdx > 0 ? lastIdx + 1 + nextBraceIdx : -1
+  //   }
+  //   return statement
+  // }),
 
   new Preprocessor(PreprocessorNames.FIX_FUNCTIONS, statement => {
     for (let specialCase of FUNCTION_CASES) {
