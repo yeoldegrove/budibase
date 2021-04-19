@@ -12,7 +12,9 @@ const saveRowHandler = async (action, context) => {
         draft[field] = value
       }
     }
-    await saveRow(draft)
+    const savedRow = await saveRow(draft)
+    context[providerId]._id = savedRow._id
+    context[providerId]._rev = savedRow._rev
   }
 }
 
