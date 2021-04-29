@@ -1,4 +1,5 @@
 <script>
+  import { hotkey } from "@budibase/bbui"
   import "@spectrum-css/button/dist/index-vars.css"
 
   export let disabled = false
@@ -11,6 +12,7 @@
   export let quiet = false
   export let icon = undefined
   export let active = false
+  export let shortcut = false
 </script>
 
 <button
@@ -23,13 +25,16 @@
   class:active
   class="spectrum-Button spectrum-Button--size{size.toUpperCase()}"
   {disabled}
-  on:click|preventDefault>
+  use:hotkey={shortcut}
+  on:click|preventDefault
+>
   {#if icon}
     <svg
       class="spectrum-Icon spectrum-Icon--size{size.toUpperCase()}"
       focusable="false"
       aria-hidden="true"
-      aria-label={icon}>
+      aria-label={icon}
+    >
       <use xlink:href="#spectrum-icon-18-{icon}" />
     </svg>
   {/if}
