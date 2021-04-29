@@ -1,10 +1,11 @@
 import hotkeys from 'hotkeys-js';
 
 export default function (element, params) {
-	
     if (!params) return
-    console.log('Params!')
-    const [keys, callbackOrEvent] = params || []
+    let [keys, callbackOrEvent] = params
+    if (typeof keys === 'string') {
+        keys = [keys]
+    }
 	hotkeys(...keys, () => {
 		if (typeof callbackOrEvent === 'function') {
 			callbackOrEvent()	

@@ -58,7 +58,7 @@
           <Button
             group
             cta
-            shortcut={[["enter"], "click"]}
+            shortcut={["enter", "click"]}
             {...$$restProps}
             disabled={confirmDisabled}
             on:click={confirm}
