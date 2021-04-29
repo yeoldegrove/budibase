@@ -64,6 +64,7 @@ export * from "./Form/Core"
 export { default as autoResizeTextArea } from "./Actions/autoresize_textarea"
 export { default as positionDropdown } from "./Actions/position_dropdown"
 export { default as clickOutside } from "./Actions/click_outside"
+export { default as hotkey } from "./Actions/hotkey"
 
 // Stores
 export { notifications, createNotificationStore } from "./Stores/notifications"
