@@ -1,6 +1,6 @@
 import hotkeys from 'hotkeys-js';
 
-export default function (element, params) {
+export default function(element, params) {
     if (!params) return
     let [keys, callbackOrEvent] = params
     if (typeof keys === 'string') {
@@ -13,8 +13,9 @@ export default function (element, params) {
 			const event = new Event(callbackOrEvent);
 			element.dispatchEvent(event)
 		}
+		return false
 	})
-	
+
 	return {
 		destroy() {
 			keys.forEach(k => {

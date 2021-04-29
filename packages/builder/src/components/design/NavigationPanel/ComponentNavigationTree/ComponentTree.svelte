@@ -1,6 +1,5 @@
 <script>
-  import { goto } from "@roxi/routify"
-  import { store, currentAssetId } from "builderStore"
+  import { store } from "builderStore"
   import { DropEffect, DropPosition } from "./dragDropStore"
   import ComponentDropdownMenu from "../ComponentDropdownMenu.svelte"
   import NavItem from "components/common/NavItem.svelte"
@@ -11,18 +10,18 @@
   export let level = 0
   export let dragDropStore
 
-  const isScreenslot = name => name?.endsWith("screenslot")
+  const isScreenslot = (name) => name?.endsWith("screenslot")
 
-  const selectComponent = component => {
+  const selectComponent = (component) => {
     store.actions.components.select(component)
   }
 
-  const dragstart = component => e => {
+  const dragstart = (component) => (e) => {
     e.dataTransfer.dropEffect = DropEffect.MOVE
     dragDropStore.actions.dragstart(component)
   }
 
-  const dragover = (component, index) => e => {
+  const dragover = (component, index) => (e) => {
     const definition = store.actions.components.getDefinition(
       component._component
     )
@@ -54,7 +53,8 @@
           ondragover="return false"
           ondragenter="return false"
           class="drop-item"
-          style="margin-left: {(level + 1) * 16}px" />
+          style="margin-left: {(level + 1) * 16}px"
+        />
       {/if}
 
       <NavItem
@@ -63,11 +63,17 @@
         on:dragstart={dragstart(component)}
         on:dragover={dragover(component, index)}
         on:drop={dragDropStore.actions.drop}
-        text={isScreenslot(component._component) ? 'Screenslot' : component._instanceName}
+        text={isScreenslot(component._component)
+          ? "Screenslot"
+          : component._instanceName}
         withArrow
         indentLevel={level + 1}
-        selected={$store.selectedComponentId === component._id}>
-        <ComponentDropdownMenu {component} />
+        selected={$store.selectedComponentId === component._id}
+      >
+        <ComponentDropdownMenu
+          {component}
+          selected={$store.selectedComponentId === component._id}
+        />
       </NavItem>
 
       {#if component._children}
@@ -76,7 +82,8 @@
           {currentComponent}
           {onSelect}
           {dragDropStore}
-          level={level + 1} />
+          level={level + 1}
+        />
       {/if}
 
       {#if $dragDropStore?.targetComponent === component && ($dragDropStore.dropPosition === DropPosition.INSIDE || $dragDropStore.dropPosition === DropPosition.BELOW)}
@@ -85,7 +92,10 @@
           ondragover="return false"
           ondragenter="return false"
           class="drop-item"
-          style="margin-left: {(level + ($dragDropStore.dropPosition === DropPosition.INSIDE ? 3 : 1)) * 16}px" />
+          style="margin-left: {(level +
+            ($dragDropStore.dropPosition === DropPosition.INSIDE ? 3 : 1)) *
+            16}px"
+        />
       {/if}
     </li>
   {/each}

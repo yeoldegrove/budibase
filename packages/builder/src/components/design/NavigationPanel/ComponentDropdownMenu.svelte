@@ -3,9 +3,10 @@
   import { store, currentAsset } from "builderStore"
   import ConfirmDialog from "components/common/ConfirmDialog.svelte"
   import { findComponentParent } from "builderStore/storeUtils"
-  import { ActionMenu, MenuItem, Icon } from "@budibase/bbui"
+  import { ActionMenu, MenuItem, Icon, hotkey } from "@budibase/bbui"
 
   export let component
+  export let selected
 
   let confirmDeleteDialog
 
@@ -50,7 +51,7 @@
     pasteComponent("below")
   }
 
-  export const deleteComponent = async () => {
+  const deleteComponent = async () => {
     await store.actions.components.delete(component)
   }
 
@@ -64,6 +65,15 @@
     store.actions.components.paste(component, mode)
   }
 </script>
+
+{#if selected}
+  <div 
+    use:hotkey={["shift+d", () => confirmDeleteDialog?.show()]}
+    use:hotkey={["shift+up", moveUpComponent]}
+    use:hotkey={["shift+down", moveDownComponent]}
+    use:hotkey={["ctrl+c", () => storeComponentForCopy(true)]}
+    use:hotkey={["ctrl+v", () => pasteComponent("below")]} />
+{/if}
 
 <ActionMenu>
   <div slot="control" class="icon">
