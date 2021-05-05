@@ -11,12 +11,13 @@ Cypress.Commands.add("login", () => {
     if (cookie) return
 
     cy.visit(`localhost:${Cypress.env("PORT")}/builder`)
-    cy.contains("Create Test User").click()
-    cy.get("input").first().type("test@test.com")
+    cy.contains("Create test user").click()
+    cy.get("input").first().type("test@test.com").blur()
+    cy.get('input[type="password"]').type("test").blur()
+    cy.get(".spectrum-Button--cta").click()
 
-    cy.get('input[type="password"]').type("test")
-
-    cy.contains("Login").click()
+    // Wait for cookie to be set
+    cy.wait(500)
   })
 })
 
@@ -36,10 +37,9 @@ Cypress.Commands.add("createApp", name => {
     .then(() => {
       cy.get(".spectrum-Modal")
         .within(() => {
-          cy.get("input").eq(0).type(name).should("have.value", name).blur()
+          cy.get("input").type(name).blur()
           cy.contains("Next").click()
-          cy.get("input").eq(1).type("test@test.com").blur()
-          cy.get("input").eq(2).type("test").blur()
+          cy.getPicker().pick("Admin")
           cy.contains("Submit").click()
         })
         .then(() => {
@@ -99,7 +99,7 @@ Cypress.Commands.add("addColumn", (tableName, columnName, type) => {
 
     // Unset table display column
     cy.contains("display column").click({ force: true })
-    cy.get("select").select(type)
+    cy.getPicker().pick(type)
     cy.contains("Save").click()
   })
 })
@@ -168,5 +168,16 @@ Cypress.Commands.add("createScreen", (screenName, route) => {
   })
   cy.get(".nav-items-container").within(() => {
     cy.contains(route).should("exist")
+  })
+})
+
+Cypress.Commands.add("getPicker", () => {
+  return cy.get(".spectrum-Picker")
+})
+
+Cypress.Commands.add("pick", { prevSubject: true }, (subject, label) => {
+  cy.get(subject).click()
+  cy.get(".spectrum-Picker-popover.is-open").within(() => {
+    cy.contains(label).click()
   })
 })
