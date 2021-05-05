@@ -45,20 +45,6 @@
     valid = isValid(runtimeBinding)
   }
 
-  function addToText(readableBinding) {
-    const position = getCaretPosition()
-    const toAdd = `{{ ${readableBinding} }}`
-
-    if (position.start) {
-      value =
-        (value?.substring(0, position.start) ?? "") +
-        toAdd +
-        (value?.substring(position.end, value.length) ?? "")
-    } else {
-      value = toAdd
-    }
-  }
-
   export function cancel() {
     dispatch("update", originalValue)
     bindingDrawer.close()
