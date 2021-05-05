@@ -53,6 +53,7 @@
     disabled={!automationLive}
     hoverable={automationLive}
     name="PauseCircle"
+    data-cy="deactivate-automation"
     on:click={() => setAutomationLive(false)}
   />
   <Icon

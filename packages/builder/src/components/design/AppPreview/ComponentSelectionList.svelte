@@ -48,7 +48,7 @@
         quiet
         size="S"
         slot="control"
-        dataCy={`category-${item.name}`}
+        data-cy={`category-${item.name}`}
         on:click={() => onItemChosen(item)}
       >
         <div class="buttonContent">
@@ -61,7 +61,7 @@
       {#each item.children || [] as item}
         {#if !item.showOnAsset || item.showOnAsset.includes($currentAssetName)}
           <MenuItem
-            dataCy={`component-${item.name}`}
+            data-cy={`component-${item.name}`}
             icon={item.icon}
             on:click={() => onItemChosen(item)}
           >
