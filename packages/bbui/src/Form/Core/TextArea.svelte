@@ -29,13 +29,15 @@
 >
   {#if error}
     <svg
-      class="spectrum-Icon spectrum-Icon--sizeM spectrum-Textfield-validationIcon"
+      class="spectrum-Icon spectrum-Icon--sizeM
+      spectrum-Textfield-validationIcon"
       focusable="false"
       aria-hidden="true"
     >
       <use xlink:href="#spectrum-icon-18-Alert" />
     </svg>
   {/if}
+  <!-- prettier-ignore -->
   <textarea
     bind:this={textarea}
     placeholder={placeholder || ""}
@@ -44,9 +46,7 @@
     {id}
     on:focus={() => (focus = true)}
     on:blur={onChange}
-  >
-    {value || ""}
-  </textarea>
+  >{value || ""}</textarea>
 </div>
 
 <style>
