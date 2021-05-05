@@ -22,6 +22,7 @@
   aria-hidden={hidden}
   aria-label={name}
   style={`transform: rotate(${rotation}deg)`}
+  {...$$restProps}
 >
   <use xlink:href="#spectrum-icon-18-{name}" />
 </svg>

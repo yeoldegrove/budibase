@@ -4,7 +4,6 @@
   const dispatch = createEventDispatcher()
   const actionMenu = getContext("actionMenu")
 
-  export let dataCy
   export let icon = undefined
   export let disabled = undefined
   export let noClose = false
@@ -18,12 +17,12 @@
 </script>
 
 <li
-  data-cy={dataCy}
   on:click|preventDefault={onClick}
   class="spectrum-Menu-item"
   class:is-disabled={disabled}
   role="menuitem"
   tabindex="0"
+  {...$$restProps}
 >
   {#if icon}
     <svg
