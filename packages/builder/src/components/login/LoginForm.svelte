@@ -39,9 +39,9 @@
 <Modal fixed>
   <ModalContent
     size="L"
-    title="Log In"
+    title="Log in"
     onConfirm={login}
-    confirmText="Log In"
+    confirmText="Log in"
     showCancelButton={false}
     showCloseIcon={false}
   >
@@ -49,9 +49,9 @@
     <Input label="Password" type="password" on:change bind:value={password} />
     <div class="footer" slot="footer">
       <Link target="_blank" href="/api/admin/auth/google">
-        Sign In With Google
+        Sign in with Google
       </Link>
-      <Button secondary on:click={createTestUser}>Create Test User</Button>
+      <Button secondary on:click={createTestUser}>Create test user</Button>
     </div>
   </ModalContent>
 </Modal>
