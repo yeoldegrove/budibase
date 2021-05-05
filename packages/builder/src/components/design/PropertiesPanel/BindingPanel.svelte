@@ -50,9 +50,9 @@
 
     if (position.start) {
       value =
-        value.substring(0, position.start) +
+        (value?.substring(0, position.start) ?? "") +
         toAdd +
-        value.substring(position.end, value.length)
+        (value?.substring(position.end, value.length) ?? "")
     } else {
       value = toAdd
     }
