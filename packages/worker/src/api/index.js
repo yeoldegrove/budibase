@@ -3,6 +3,7 @@ const compress = require("koa-compress")
 const zlib = require("zlib")
 const { routes } = require("./routes")
 const { buildAuthMiddleware } = require("@budibase/auth").auth
+const { isDev } = require("../environment")
 
 const PUBLIC_ENDPOINTS = [
   {
@@ -57,7 +58,7 @@ router
   .use(buildAuthMiddleware(PUBLIC_ENDPOINTS))
   // for now no public access is allowed to worker (bar health check)
   .use((ctx, next) => {
-    if (!ctx.isAuthenticated) {
+    if (!ctx.isAuthenticated && !isDev()) {
       ctx.throw(403, "Unauthorized - no public worker access")
     }
     return next()
