@@ -55,3 +55,10 @@ module.exports.removeHandlebarsStatements = string => {
   }
   return string
 }
+
+module.exports.removeBraces = string => {
+  if (typeof string !== "string" || !(string.startsWith("{{") && string.endsWith("}}"))) {
+    return string
+  }
+  return string.substr(2, string.length - 4).trim()
+}

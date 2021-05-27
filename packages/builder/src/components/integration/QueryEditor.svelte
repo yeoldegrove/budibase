@@ -56,6 +56,10 @@
     editor.focus()
   }
 
+  export function getCaretPosition() {
+    return editor.getCursor()
+  }
+
   const modes = {
     js: {
       name: "javascript",

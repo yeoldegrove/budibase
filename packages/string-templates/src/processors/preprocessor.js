@@ -16,8 +16,12 @@ class Preprocessor {
     this.fn = fn
   }
 
-  process(fullString, statement) {
-    const output = this.fn(statement)
+  process(fullString, statement, context) {
+    const output = this.fn(statement, context)
+    // javascript functionality shouldn't go onto HBS
+    if (typeof output !== "string") {
+      return output
+    }
     const idx = fullString.indexOf(statement)
     return swapStrings(fullString, idx, statement.length, output)
   }

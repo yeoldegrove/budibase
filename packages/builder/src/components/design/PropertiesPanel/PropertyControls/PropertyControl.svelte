@@ -1,5 +1,5 @@
 <script>
-  import { Button, Icon, Drawer, Body } from "@budibase/bbui"
+  import { Button, Icon, Drawer, Toggle } from "@budibase/bbui"
   import { store, currentAsset } from "builderStore"
   import {
     getBindableProperties,
@@ -23,6 +23,7 @@
   let temporaryBindableValue = value
   let anchor
   let valid
+  let usingJS = false
 
   $: bindableProperties = getBindableProperties(
     $currentAsset,
@@ -96,12 +97,14 @@
       <svelte:fragment slot="description">
         Add the objects on the left to enrich your text.
       </svelte:fragment>
+      <Toggle slot="toggles" text="Use Javascript" bind:value={usingJS} />
       <Button cta slot="buttons" disabled={!valid} on:click={handleClose}
         >Save</Button
       >
       <BindingPanel
         slot="body"
         bind:valid
+        bind:usingJS
         value={safeValue}
         close={handleClose}
         on:update={e => (temporaryBindableValue = e.detail)}

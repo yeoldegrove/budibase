@@ -11,21 +11,21 @@ class Postprocessor {
     this.fn = fn
   }
 
-  process(statement) {
-    return this.fn(statement)
+  process(string) {
+    return this.fn(string)
   }
 }
 
 module.exports.processors = [
-  new Postprocessor(PostProcessorNames.CONVERT_LITERALS, statement => {
-    if (typeof statement !== "string" || !statement.includes(LITERAL_MARKER)) {
-      return statement
+  new Postprocessor(PostProcessorNames.CONVERT_LITERALS, string => {
+    if (typeof string !== "string" || !string.includes(LITERAL_MARKER)) {
+      return string
     }
-    const splitMarkerIndex = statement.indexOf("-")
-    const type = statement.substring(12, splitMarkerIndex)
-    const value = statement.substring(
+    const splitMarkerIndex = string.indexOf("-")
+    const type = string.substring(12, splitMarkerIndex)
+    const value = string.substring(
       splitMarkerIndex + 1,
-      statement.length - 2
+      string.length - 2
     )
     switch (type) {
       case "string":

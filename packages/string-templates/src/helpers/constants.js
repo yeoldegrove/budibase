@@ -22,3 +22,5 @@ module.exports.HelperFunctionNames = {
 }
 
 module.exports.LITERAL_MARKER = "%LITERAL%"
+module.exports.JAVASCRIPT_MARKER = "#javascript"
+module.exports.JAVASCRIPT_COMMENT = "// JS"

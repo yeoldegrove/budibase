@@ -1,5 +1,5 @@
 <script>
-  import { Icon, Input, Drawer, Button } from "@budibase/bbui"
+  import { Icon, Input, Drawer, Button, Toggle } from "@budibase/bbui"
   import {
     readableToRuntimeBinding,
     runtimeToReadableBinding,
@@ -14,6 +14,7 @@
   export let placeholder
   export let label
   export let disabled = false
+  let usingJS = false
 
   const dispatch = createEventDispatcher()
   let bindingDrawer
@@ -48,12 +49,16 @@
   <svelte:fragment slot="description">
     Add the objects on the left to enrich your text.
   </svelte:fragment>
+  <svelte:fragment slot="toggles">
+    <Toggle text="Use Javascript" bind:value={usingJS} />
+  </svelte:fragment>
   <Button cta slot="buttons" on:click={handleClose}>Save</Button>
   <svelte:component
     this={panel}
     slot="body"
     value={readableValue}
     close={handleClose}
+    bind:usingJS
     on:update={event => (tempValue = event.detail)}
     bindableProperties={bindings}
   />

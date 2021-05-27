@@ -37,10 +37,15 @@
     <section class="drawer" transition:slide>
       <header>
         <div class="text">
-          <Heading size="XS">{title}</Heading>
+          <div class="heading">
+            <Heading size="XS">{title}</Heading>
+          </div>
           <Body size="XXS">
             <slot name="description" />
           </Body>
+        </div>
+        <div class="toggles">
+          <slot name="toggles" />
         </div>
         <div class="buttons">
           <slot name="buttons" />
@@ -70,9 +75,6 @@
     border-bottom: var(--border-light);
     padding: var(--spectrum-alias-item-padding-s) 0;
   }
-  header :global(*) + :global(*) {
-    margin: 0 var(--spectrum-alias-grid-baseline);
-  }
 
   .text {
     display: flex;
@@ -80,5 +82,11 @@
     justify-content: flex-start;
     align-items: center;
     margin-left: var(--spectrum-alias-item-padding-s);
+    margin-right: auto;
+  }
+
+  .heading {
+    margin-right: var(--spacing-s);
+    margin-top: -2px;
   }
 </style>

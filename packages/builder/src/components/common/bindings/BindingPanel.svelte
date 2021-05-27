@@ -7,6 +7,7 @@
     Label,
     DrawerContent,
     Layout,
+    Toggle,
   } from "@budibase/bbui"
   import { createEventDispatcher } from "svelte"
   import { isValid } from "@budibase/string-templates"
@@ -16,7 +17,8 @@
   } from "builderStore/dataBinding"
   import { currentAsset, store } from "builderStore"
   import { handlebarsCompletions } from "constants/completions"
-  import { addToText } from "./utils"
+  import { BuildTextAddFunction, removeJavascriptWrapper, JS_MARKER } from "./utils"
+  import Editor from "components/integration/QueryEditor.svelte"
 
   const dispatch = createEventDispatcher()
 
@@ -24,12 +26,14 @@
   export let value = ""
   export let bindingDrawer
   export let valid = true
+  export let usingJS = value.includes(JS_MARKER)
 
   let originalValue = value
   let helpers = handlebarsCompletions()
   let getCaretPosition
   let search = ""
 
+  $: addToText = BuildTextAddFunction(getCaretPosition, usingJS)
   $: value && checkValid()
   $: bindableProperties = getBindableProperties(
     $currentAsset,
@@ -38,9 +42,18 @@
   $: dispatch("update", value)
   $: ({ instance, context } = groupBy("type", bindableProperties))
   $: searchRgx = new RegExp(search, "ig")
+  $: usingJS && toggleJS()
+
+  function toggleJS() {
+    const hasJS = value.includes(JS_MARKER)
+    if (!usingJS) {
+      value = hasJS ? "" : value
+    } else {
+      value = hasJS ? removeJavascriptWrapper(value) : `return "${value}"`
+    }
+  }
 
   function checkValid() {
-    // TODO: need to convert the value to the runtime binding
     const runtimeBinding = readableToRuntimeBinding(bindableProperties, value)
     valid = isValid(runtimeBinding)
   }
@@ -64,7 +77,7 @@
             ) as { readableBinding }}
               <li
                 on:click={() => {
-                  value = addToText(value, getCaretPosition(), readableBinding)
+                  value = addToText(value, readableBinding)
                 }}
               >
                 {readableBinding}
@@ -80,7 +93,7 @@
             {#each instance.filter(instance =>
               instance.readableBinding.match(searchRgx)
             ) as { readableBinding }}
-              <li on:click={() => addToText(readableBinding)}>
+              <li on:click={() => addToText(value, readableBinding)}>
                 {readableBinding}
               </li>
             {/each}
@@ -93,7 +106,7 @@
           {#each helpers.filter(helper => helper.label.match(searchRgx) || helper.description.match(searchRgx)) as helper}
             <li
               on:click={() => {
-                value = addToText(value, getCaretPosition(), helper.text)
+                value = addToText(value, helper.text)
               }}
             >
               <div>
@@ -110,17 +123,28 @@
     </Layout>
   </svelte:fragment>
   <div class="main">
-    <TextArea
-      bind:getCaretPosition
-      bind:value
-      placeholder="Add text, or click the objects on the left to add them to the textbox."
-    />
-    {#if !valid}
-      <p class="syntax-error">
-        Current Handlebars syntax is invalid, please check the guide
-        <a href="https://handlebarsjs.com/guide/">here</a>
-        for more details.
-      </p>
+    {#if !usingJS}
+      <TextArea
+        bind:getCaretPosition
+        bind:value
+        placeholder="Add text, or click the objects on the left to add them to the textbox."
+      />
+      {#if !valid}
+        <p class="syntax-error">
+          Current Handlebars syntax is invalid, please check the guide
+          <a href="https://handlebarsjs.com/guide/">here</a>
+          for more details.
+        </p>
+      {/if}
+    {:else}
+      <!-- TODO: CARET POSITION -->
+      <Editor
+          mode="javascript"
+          on:change={e => {
+              value = `{{ ${JS_MARKER} ${e.detail.value} }}`
+            }}
+          value={value=removeJavascriptWrapper(value)}
+      />
     {/if}
   </div>
 </DrawerContent>

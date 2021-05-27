@@ -1,5 +1,5 @@
 <script>
-  import { Icon, Input, Modal, Body, ModalContent } from "@budibase/bbui"
+  import { Icon, Input, Modal, Body, ModalContent, Toggle } from "@budibase/bbui"
   import {
     readableToRuntimeBinding,
     runtimeToReadableBinding,
@@ -18,6 +18,7 @@
 
   let bindingModal
   let validity = true
+  let usingJS = false
 
   $: readableValue = runtimeToReadableBinding(bindings, value)
   $: tempValue = readableValue
@@ -55,9 +56,11 @@
     <Body extraSmall grey>
       Add the objects on the left to enrich your text.
     </Body>
+    <Toggle text="Use Javascript" bind:value={usingJS} />
     <svelte:component
       this={panel}
       serverSide
+      bind:usingJS
       value={readableValue}
       bind:validity
       on:update={event => (tempValue = event.detail)}

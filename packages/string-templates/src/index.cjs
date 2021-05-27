@@ -98,12 +98,16 @@ module.exports.processStringSync = (string, context) => {
     throw "Cannot process non-string types."
   }
   try {
-    string = processors.preprocess(string)
+    const output = processors.preprocess(string, clonedContext)
+    // javascript functionality is pre-processed directly to output
+    if (typeof output !== "string") {
+      return output
+    }
     // this does not throw an error when template can't be fulfilled, have to try correct beforehand
-    const template = hbsInstance.compile(string, {
+    const template = hbsInstance.compile(output, {
       strict: false,
     })
-    return processors.postprocess(template(clonedContext))
+    return processors.postprocess(template(clonedContext), clonedContext)
   } catch (err) {
     return removeHandlebarsStatements(input)
   }
@@ -130,13 +134,21 @@ module.exports.isValid = string => {
     "object",
     "array",
     "cannot read property",
+    "is not defined",
+    "Unexpected identifier",
   ]
   // this is a portion of a specific string always output by handlebars in the case of a syntax error
   const invalidCases = [`expecting '`]
   // don't really need a real context to check if its valid
   const context = {}
   try {
-    hbsInstance.compile(processors.preprocess(string, false))(context)
+    const preprocessed = processors.preprocess(string, {}, false)
+    // javascript, must be valid enough
+    if (typeof preprocessed !== "string") {
+      return true
+    }
+    const hbs = hbsInstance.compile(preprocessed)
+    hbs(context)
     return true
   } catch (err) {
     const msg = err && err.message ? err.message : err

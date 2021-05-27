@@ -1,8 +1,14 @@
-const { FIND_HBS_REGEX } = require("../utilities")
+const { FIND_HBS_REGEX, removeBraces } = require("../utilities")
+const { JAVASCRIPT_MARKER } = require("../helpers/constants")
 const preprocessor = require("./preprocessor")
 const postprocessor = require("./postprocessor")
+const jsProcessor = require("./jsProcessor")
 
-function process(output, processors) {
+function process(output, processors, context) {
+  // process javascript before anything else
+  if (removeBraces(output).trim().startsWith(JAVASCRIPT_MARKER)) {
+    return jsProcessor(output, context)
+  }
   for (let processor of processors) {
     // if a literal statement has occurred stop
     if (typeof output !== "string") {
@@ -15,13 +21,13 @@ function process(output, processors) {
       continue
     }
     for (let match of matches) {
-      output = processor.process(output, match)
+      output = processor.process(output, match, context)
     }
   }
   return output
 }
 
-module.exports.preprocess = (string, finalise = true) => {
+module.exports.preprocess = (string, context, finalise = true) => {
   let processors = preprocessor.processors
   // the pre-processor finalisation stops handlebars from ever throwing an error
   // might want to pre-process for other benefits but still want to see errors
@@ -30,9 +36,9 @@ module.exports.preprocess = (string, finalise = true) => {
       processor => processor.name !== preprocessor.PreprocessorNames.FINALISE
     )
   }
-  return process(string, processors)
+  return process(string, processors, context)
 }
 
-module.exports.postprocess = string => {
-  return process(string, postprocessor.processors)
+module.exports.postprocess = (string, context) => {
+  return process(string, postprocessor.processors, context)
 }

@@ -6,12 +6,14 @@
     Heading,
     Layout,
     DrawerContent,
+    Toggle,
   } from "@budibase/bbui"
   import { createEventDispatcher } from "svelte"
   import { isValid } from "@budibase/string-templates"
   import { handlebarsCompletions } from "constants/completions"
   import { readableToRuntimeBinding } from "builderStore/dataBinding"
-  import { addToText } from "./utils"
+  import { BuildTextAddFunction, JS_MARKER, removeJavascriptWrapper } from "./utils"
+  import Editor from "components/integration/QueryEditor.svelte"
 
   const dispatch = createEventDispatcher()
 
@@ -19,16 +21,32 @@
   export let bindableProperties = []
   export let validity = true
   export let value = ""
+  export let usingJS = value.includes(JS_MARKER)
 
   let hasReadable = bindableProperties[0].readableBinding != null
   let helpers = handlebarsCompletions()
   let getCaretPosition
   let search = ""
+  let jsValue = removeJavascriptWrapper(value)
 
+  $: addToText = BuildTextAddFunction(getCaretPosition, usingJS)
   $: categories = Object.entries(groupBy("category", bindableProperties))
   $: value && checkValid()
+  $: value = jsValue ? `{{ ${JS_MARKER} ${jsValue} }}` : value
   $: dispatch("update", value)
   $: searchRgx = new RegExp(search, "ig")
+  $: usingJS && toggleJS()
+
+  function toggleJS() {
+    const hasJS = value.includes(JS_MARKER)
+    if (!usingJS) {
+      console.log(hasJS)
+      jsValue = ""
+      value = hasJS ? "" : value
+    } else {
+      jsValue = hasJS ? removeJavascriptWrapper(value) : `return "${value}"`
+    }
+  }
 
   function checkValid() {
     if (hasReadable) {
@@ -56,7 +74,7 @@
             <div
               class="binding"
               on:click={() => {
-                value = addToText(value, getCaretPosition(), binding)
+                value = addToText(value, binding)
               }}
             >
               <span class="binding__label">{binding.label}</span>
@@ -75,7 +93,7 @@
           <div
             class="binding"
             on:click={() => {
-              value = addToText(value, getCaretPosition(), helper.text)
+              value = addToText(value, helper.text)
             }}
           >
             <span class="binding__label">{helper.label}</span>
@@ -90,17 +108,28 @@
     </Layout>
   </div>
   <div class="text">
-    <TextArea
-      bind:getCaretPosition
-      bind:value
-      placeholder="Add text, or click the objects on the left to add them to the textbox."
-    />
-    {#if !validity}
-      <p class="syntax-error">
-        Current Handlebars syntax is invalid, please check the guide
-        <a href="https://handlebarsjs.com/guide/">here</a>
-        for more details.
-      </p>
+    {#if !usingJS}
+      <TextArea
+          bind:getCaretPosition
+          bind:value
+          placeholder="Add text, or click the objects on the left to add them to the textbox."
+      />
+      {#if !validity}
+        <p class="syntax-error">
+          Current Handlebars syntax is invalid, please check the guide
+          <a href="https://handlebarsjs.com/guide/">here</a>
+          for more details.
+        </p>
+      {/if}
+    {:else}
+      <!-- TODO: CARET POSITION -->
+      <Editor
+          mode="javascript"
+          on:change={e => {
+              jsValue = e.detail.value
+            }}
+          value={jsValue}
+      />
     {/if}
   </div>
 </DrawerContent>
