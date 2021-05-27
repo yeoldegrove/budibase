@@ -13,6 +13,7 @@
   import ConfigChecklist from "components/common/ConfigChecklist.svelte"
   import { organisation, auth } from "stores/portal"
   import { onMount } from "svelte"
+  import ErrorReporter from "./_components/ErrorReporter.svelte"
   import UpdateUserInfoModal from "components/settings/UpdateUserInfoModal.svelte"
   import ChangePasswordModal from "components/settings/ChangePasswordModal.svelte"
   import Logo from "assets/bb-space-black.svg"
@@ -93,7 +94,9 @@
     </div>
     <div class="main">
       <div class="toolbar">
-        <div />
+        <div>
+          <ErrorReporter />
+        </div>
         <ActionMenu align="right">
           <div slot="control" class="avatar">
             <Avatar size="M" initials={$auth.initials} />
