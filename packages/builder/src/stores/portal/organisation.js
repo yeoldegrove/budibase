@@ -1,4 +1,5 @@
-import { writable, get } from "svelte/store"
+import { get } from "svelte/store"
+import { writable } from "stores/writable"
 import api from "builderStore/api"
 
 const DEFAULT_CONFIG = {

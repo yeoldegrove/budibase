@@ -91,12 +91,13 @@
           </Navigation>
         </div>
       </Layout>
+      <Layout paddingX="L" paddingY="L" noGap>
+        <ErrorReporter />
+      </Layout>
     </div>
     <div class="main">
       <div class="toolbar">
-        <div>
-          <ErrorReporter />
-        </div>
+        <div />
         <ActionMenu align="right">
           <div slot="control" class="avatar">
             <Avatar size="M" initials={$auth.initials} />
@@ -138,6 +139,10 @@
     align-items: stretch;
   }
   .nav {
+    height: 100%;
+    display: grid;
+    align-content: space-between;
+
     background: var(--background);
     border-right: var(--border-light);
     overflow: auto;

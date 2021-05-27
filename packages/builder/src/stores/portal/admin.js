@@ -1,4 +1,4 @@
-import { writable } from "svelte/store"
+import { writable } from "stores/writable"
 import api from "builderStore/api"
 
 export function createAdminStore() {

@@ -4,7 +4,9 @@ export function createHistoryStore() {
   const { subscribe, update } = writable([])
 
     function push(event) {
-        update(s => [...s.slice(0, 10), event])
+        update(s => {
+            return [event, ...s].slice(0, 10)
+        })
     }
 
   return {
