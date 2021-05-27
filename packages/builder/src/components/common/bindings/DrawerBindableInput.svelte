@@ -6,6 +6,7 @@
   } from "builderStore/dataBinding"
   import BindingPanel from "components/common/bindings/BindingPanel.svelte"
   import { createEventDispatcher } from "svelte"
+  import { JS_MARKER } from "./utils"
 
   export let panel = BindingPanel
   export let value = ""
@@ -14,7 +15,7 @@
   export let placeholder
   export let label
   export let disabled = false
-  let usingJS = false
+  let usingJS = value.includes(JS_MARKER)
 
   const dispatch = createEventDispatcher()
   let bindingDrawer

@@ -6,7 +6,6 @@
     Heading,
     Layout,
     DrawerContent,
-    Toggle,
   } from "@budibase/bbui"
   import { createEventDispatcher } from "svelte"
   import { isValid } from "@budibase/string-templates"
@@ -21,33 +20,33 @@
   export let bindableProperties = []
   export let validity = true
   export let value = ""
-  export let usingJS = value.includes(JS_MARKER)
+  export let usingJS
 
   let hasReadable = bindableProperties[0].readableBinding != null
   let helpers = handlebarsCompletions()
   let getCaretPosition
   let search = ""
+  let editorReplace
   let jsValue = removeJavascriptWrapper(value)
 
-  $: addToText = BuildTextAddFunction(getCaretPosition, usingJS)
+  $: addToText = BuildTextAddFunction(getCaretPosition, usingJS, editorReplace)
   $: categories = Object.entries(groupBy("category", bindableProperties))
   $: value && checkValid()
-  $: value = jsValue ? `{{ ${JS_MARKER} ${jsValue} }}` : value
   $: dispatch("update", value)
   $: searchRgx = new RegExp(search, "ig")
-  $: usingJS && toggleJS()
+  $: toggleJS(usingJS)
+  $: value = usingJS ? `{{ ${JS_MARKER} ${jsValue} }}` : value
 
   function toggleJS() {
     const hasJS = value.includes(JS_MARKER)
     if (!usingJS) {
-      console.log(hasJS)
-      jsValue = ""
       value = hasJS ? "" : value
+      jsValue = ""
     } else {
-      jsValue = hasJS ? removeJavascriptWrapper(value) : `return "${value}"`
+      jsValue = hasJS ? removeJavascriptWrapper(value) : ""
+      value = ""
     }
   }
-
   function checkValid() {
     if (hasReadable) {
       const runtime = readableToRuntimeBinding(bindableProperties, value)
@@ -122,12 +121,12 @@
         </p>
       {/if}
     {:else}
-      <!-- TODO: CARET POSITION -->
       <Editor
           mode="javascript"
+          bind:replaceAtCursor={editorReplace}
           on:change={e => {
-              jsValue = e.detail.value
-            }}
+            jsValue = e.detail.value
+          }}
           value={jsValue}
       />
     {/if}

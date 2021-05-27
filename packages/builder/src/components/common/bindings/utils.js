@@ -1,9 +1,9 @@
 export const JS_MARKER = "#javascript"
 
-export function addToText({ value, caretPos, binding, usingJS }) {
+export function addToText({ value, caretPos, binding }) {
   binding = typeof binding === "string" ? binding : binding.path
   value = value == null ? "" : value
-  if (!value.includes("{{") && !value.includes("}}") && !usingJS) {
+  if (!value.includes("{{") && !value.includes("}}")) {
     binding = `{{ ${binding} }}`
   }
   if (caretPos.start) {
@@ -17,14 +17,20 @@ export function addToText({ value, caretPos, binding, usingJS }) {
   return value
 }
 
-export function BuildTextAddFunction(caretPosFn, usingJS) {
+export function BuildTextAddFunction(caretPosFn, usingJS, updateEditor) {
   return (value, binding) => {
-    return addToText({
-      value,
-      caretPos: caretPosFn(),
-      usingJS,
-      binding,
-    })
+    // this will populate out
+    if (updateEditor && usingJS) {
+      return updateEditor(binding)
+    } else {
+      return addToText({
+        value,
+        caretPos: caretPosFn ? caretPosFn() : 0,
+        usingJS,
+        binding,
+        updateEditor,
+      })
+    }
   }
 }
 

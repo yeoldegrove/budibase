@@ -56,8 +56,9 @@
     editor.focus()
   }
 
-  export function getCaretPosition() {
-    return editor.getCursor()
+  export function replaceAtCursor(text) {
+    editor.replaceSelection(text)
+    return editor.getValue()
   }
 
   const modes = {

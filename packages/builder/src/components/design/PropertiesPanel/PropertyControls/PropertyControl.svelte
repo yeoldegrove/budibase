@@ -8,6 +8,7 @@
   } from "builderStore/dataBinding"
   import BindingPanel from "components/common/bindings/BindingPanel.svelte"
   import { capitalise } from "helpers"
+  import { JS_MARKER } from "../../../common/bindings/utils"
 
   export let label = ""
   export let bindable = true
@@ -15,7 +16,7 @@
   export let control = null
   export let key = ""
   export let type = ""
-  export let value = null
+  export let value = ""
   export let props = {}
   export let onChange = () => {}
 
@@ -23,7 +24,7 @@
   let temporaryBindableValue = value
   let anchor
   let valid
-  let usingJS = false
+  let usingJS = value.includes(JS_MARKER)
 
   $: bindableProperties = getBindableProperties(
     $currentAsset,

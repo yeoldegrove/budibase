@@ -6,6 +6,7 @@
   } from "builderStore/dataBinding"
   import ServerBindingPanel from "components/common/bindings/ServerBindingPanel.svelte"
   import { createEventDispatcher } from "svelte"
+  import { JS_MARKER } from "./utils"
   const dispatch = createEventDispatcher()
 
   export let panel = ServerBindingPanel
@@ -18,7 +19,7 @@
 
   let bindingModal
   let validity = true
-  let usingJS = false
+  let usingJS = value.includes(JS_MARKER)
 
   $: readableValue = runtimeToReadableBinding(bindings, value)
   $: tempValue = readableValue

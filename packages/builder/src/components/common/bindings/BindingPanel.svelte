@@ -26,14 +26,16 @@
   export let value = ""
   export let bindingDrawer
   export let valid = true
-  export let usingJS = value.includes(JS_MARKER)
+  export let usingJS
 
   let originalValue = value
   let helpers = handlebarsCompletions()
   let getCaretPosition
   let search = ""
+  let editorReplace
+  let jsValue = removeJavascriptWrapper(value)
 
-  $: addToText = BuildTextAddFunction(getCaretPosition, usingJS)
+  $: addToText = BuildTextAddFunction(getCaretPosition, usingJS, editorReplace)
   $: value && checkValid()
   $: bindableProperties = getBindableProperties(
     $currentAsset,
@@ -42,14 +44,17 @@
   $: dispatch("update", value)
   $: ({ instance, context } = groupBy("type", bindableProperties))
   $: searchRgx = new RegExp(search, "ig")
-  $: usingJS && toggleJS()
+  $: toggleJS(usingJS)
+  $: value = usingJS ? `{{ ${JS_MARKER} ${jsValue} }}` : value
 
   function toggleJS() {
     const hasJS = value.includes(JS_MARKER)
     if (!usingJS) {
       value = hasJS ? "" : value
+      jsValue = ""
     } else {
-      value = hasJS ? removeJavascriptWrapper(value) : `return "${value}"`
+      jsValue = hasJS ? removeJavascriptWrapper(value) : ""
+      value = ""
     }
   }
 
@@ -137,13 +142,14 @@
         </p>
       {/if}
     {:else}
-      <!-- TODO: CARET POSITION -->
       <Editor
           mode="javascript"
+          bind:replaceAtCursor={editorReplace}
           on:change={e => {
-              value = `{{ ${JS_MARKER} ${e.detail.value} }}`
-            }}
-          value={value=removeJavascriptWrapper(value)}
+            console.log(jsValue)
+            jsValue = e.detail.value
+          }}
+          value={jsValue}
       />
     {/if}
   </div>
