@@ -10,7 +10,7 @@
   const dispatch = createEventDispatcher()
 
   export let panel = ServerBindingPanel
-  export let value = ""
+  export let value
   export let bindings = []
   export let thin = true
   export let title = "Bindings"
@@ -19,7 +19,7 @@
 
   let bindingModal
   let validity = true
-  let usingJS = value.includes(JS_MARKER)
+  let usingJS = typeof value === "string" ? value.includes(JS_MARKER) : false
 
   $: readableValue = runtimeToReadableBinding(bindings, value)
   $: tempValue = readableValue
@@ -57,7 +57,7 @@
     <Body extraSmall grey>
       Add the objects on the left to enrich your text.
     </Body>
-    <Toggle text="Use Javascript" bind:value={usingJS} />
+    <Toggle text="Javascript" bind:value={usingJS} />
     <svelte:component
       this={panel}
       serverSide

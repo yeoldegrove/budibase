@@ -9,13 +9,13 @@
   import { JS_MARKER } from "./utils"
 
   export let panel = BindingPanel
-  export let value = ""
+  export let value
   export let bindings = []
   export let title = "Bindings"
   export let placeholder
   export let label
   export let disabled = false
-  let usingJS = value.includes(JS_MARKER)
+  let usingJS = typeof value === "string" ? value.includes(JS_MARKER) : false
 
   const dispatch = createEventDispatcher()
   let bindingDrawer
@@ -51,7 +51,7 @@
     Add the objects on the left to enrich your text.
   </svelte:fragment>
   <svelte:fragment slot="toggles">
-    <Toggle text="Use Javascript" bind:value={usingJS} />
+    <Toggle text="Javascript" bind:value={usingJS} />
   </svelte:fragment>
   <Button cta slot="buttons" on:click={handleClose}>Save</Button>
   <svelte:component

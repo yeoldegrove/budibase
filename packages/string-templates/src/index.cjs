@@ -119,7 +119,8 @@ module.exports.processStringSync = (string, context) => {
  * @returns {string} The wrapped property ready to be added to a templating string.
  */
 module.exports.makePropSafe = property => {
-  return `[${property}]`.replace("[[", "[").replace("]]", "]")
+  // TODO: need to fix
+  return property
 }
 
 /**

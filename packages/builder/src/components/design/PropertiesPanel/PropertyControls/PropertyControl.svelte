@@ -16,7 +16,7 @@
   export let control = null
   export let key = ""
   export let type = ""
-  export let value = ""
+  export let value
   export let props = {}
   export let onChange = () => {}
 
@@ -24,7 +24,7 @@
   let temporaryBindableValue = value
   let anchor
   let valid
-  let usingJS = value.includes(JS_MARKER)
+  let usingJS = typeof value === "string" ? value.includes(JS_MARKER) : false
 
   $: bindableProperties = getBindableProperties(
     $currentAsset,
@@ -98,7 +98,7 @@
       <svelte:fragment slot="description">
         Add the objects on the left to enrich your text.
       </svelte:fragment>
-      <Toggle slot="toggles" text="Use Javascript" bind:value={usingJS} />
+      <Toggle slot="toggles" text="Javascript" bind:value={usingJS} />
       <Button cta slot="buttons" disabled={!valid} on:click={handleClose}
         >Save</Button
       >

@@ -7,7 +7,6 @@
     Label,
     DrawerContent,
     Layout,
-    Toggle,
   } from "@budibase/bbui"
   import { createEventDispatcher } from "svelte"
   import { isValid } from "@budibase/string-templates"
@@ -146,7 +145,6 @@
           mode="javascript"
           bind:replaceAtCursor={editorReplace}
           on:change={e => {
-            console.log(jsValue)
             jsValue = e.detail.value
           }}
           value={jsValue}
