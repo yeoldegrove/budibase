@@ -10,7 +10,7 @@
   import { history } from "stores/history"
 
   function throwError() {
-    throw "Test error"
+    throw "This is just a manually thrown test error"
   }
 
   let modal
@@ -36,6 +36,7 @@
 
   function handleClick() {
     modal.show()
+    throwError()
     // throwError()
   }
 </script>
