@@ -91,14 +91,6 @@
         <DeployModal />
       </div>
     </div>
-    <div class="beta">
-      <Button
-        secondary
-        href="https://github.com/Budibase/budibase/discussions/categories/ideas"
-      >
-        Request feature
-      </Button>
-    </div>
     <slot />
   </div>
 {:catch error}
@@ -172,7 +164,7 @@
 
   .topnavitemright a:hover {
     color: var(--ink);
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .home-logo {
@@ -199,15 +191,5 @@
   }
   i:hover {
     color: var(--ink);
-  }
-
-  .beta {
-    position: absolute;
-    bottom: var(--spacing-m);
-    left: var(--spacing-m);
-    z-index: 1;
-  }
-  .beta :global(button) {
-    background-color: var(--background);
   }
 </style>

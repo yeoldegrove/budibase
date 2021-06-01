@@ -92,10 +92,6 @@ async function createInstance(template) {
     // https://docs.couchdb.org/en/master/ddocs/views/collation.html#collation-specification
     views: {},
   })
-  // add view for linked rows
-  await createLinkView(appId)
-  await createRoutingView(appId)
-  await createAllSearchIndex(appId)
 
   // replicate the template data to the instance DB
   // this is currently very hard to test, downloading and importing template files
@@ -105,12 +101,18 @@ async function createInstance(template) {
     if (!ok) {
       throw "Error loading database dump from template."
     }
+    var { _rev } = await db.get(DocumentTypes.APP_METADATA)
   } else {
     // create the users table
     await db.put(USERS_TABLE_SCHEMA)
   }
 
-  return { _id: appId }
+  // add view for linked rows
+  await createLinkView(appId)
+  await createRoutingView(appId)
+  await createAllSearchIndex(appId)
+
+  return { _id: appId, _rev }
 }
 
 exports.fetch = async function (ctx) {
@@ -195,6 +197,9 @@ exports.create = async function (ctx) {
     deployment: {
       type: "cloud",
     },
+  }
+  if (instance._rev) {
+    newApplication._rev = instance._rev
   }
   const instanceDb = new CouchDB(appId)
   await instanceDb.put(newApplication)

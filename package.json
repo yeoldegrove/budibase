@@ -23,7 +23,7 @@
     "initialise": "lerna run initialise",
     "publishdev": "lerna run publishdev",
     "publishnpm": "yarn build && lerna publish --force-publish",
-    "release": "lerna publish --force-publish --yes",
+    "release": "yarn build && lerna publish patch --yes --force-publish",
     "restore": "yarn run clean && yarn run bootstrap && yarn run build",
     "nuke": "yarn run nuke:packages && yarn run nuke:docker",
     "nuke:packages": "yarn run restore",
@@ -40,12 +40,5 @@
     "test:e2e:ci": "lerna run cy:ci",
     "build:docker": "lerna run build:docker && cd hosting/scripts/linux/ && ./release-to-docker-hub.sh && cd -",
     "build:docker:staging": "cd hosting/scripts/linux/ && ./release-to-docker-hub.sh staging && cd -"
-  },
-  "dependencies": {
-    "@spectrum-css/actionbutton": "^1.0.1",
-    "@spectrum-css/actiongroup": "^1.0.1",
-    "@spectrum-css/link": "^3.1.1",
-    "@spectrum-css/menu": "^3.0.1",
-    "@spectrum-css/toast": "^3.0.1"
   }
 }

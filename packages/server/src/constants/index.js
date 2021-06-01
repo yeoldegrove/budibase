@@ -2,8 +2,6 @@ const { BUILTIN_ROLE_IDS } = require("@budibase/auth/roles")
 const { UserStatus } = require("@budibase/auth").constants
 const { ObjectStoreBuckets } = require("@budibase/auth").objectStore
 
-exports.LOGO_URL = "https://i.imgur.com/ycNeYTy.png"
-
 exports.JobQueues = {
   AUTOMATIONS: "automationQueue",
 }
@@ -103,7 +101,7 @@ exports.AutoFieldSubTypes = {
   AUTO_ID: "autoID",
 }
 
-exports.OBJ_STORE_DIRECTORY = "/app-assets/assets"
+exports.OBJ_STORE_DIRECTORY = "/prod-budi-app-assets"
 exports.BaseQueryVerbs = {
   CREATE: "create",
   READ: "read",

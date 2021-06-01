@@ -1,7 +1,6 @@
 <script>
-  import { onMount } from "svelte"
   import { ActionButton } from "@budibase/bbui"
-  import GoogleLogo from "/assets/google-logo.png"
+  import GoogleLogo from "assets/google-logo.png"
   import { admin } from "stores/portal"
 
   let show = false
@@ -10,13 +9,13 @@
 </script>
 
 {#if show}
-  <ActionButton>
-    <a target="_blank" href="/api/admin/auth/google">
-      <div class="inner">
-        <img src={GoogleLogo} alt="google icon" />
-        <p>Sign in with Google</p>
-      </div>
-    </a>
+  <ActionButton
+    on:click={() => window.open("/api/admin/auth/google", "_blank")}
+  >
+    <div class="inner">
+      <img src={GoogleLogo} alt="google icon" />
+      <p>Sign in with Google</p>
+    </div>
   </ActionButton>
 {/if}
 
