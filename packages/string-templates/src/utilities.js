@@ -13,8 +13,14 @@ module.exports.swapStrings = (string, start, length, swap) => {
 
 // removes null and undefined
 module.exports.removeNull = obj => {
-  obj = _(obj).omitBy(_.isUndefined).omitBy(_.isNull).value()
+  if (!obj instanceof Date) {
+    obj = _(obj).omitBy(_.isUndefined).omitBy(_.isNull).value()
+  }
   for (let [key, value] of Object.entries(obj)) {
+    if (value == null) {
+      delete obj[key]
+      continue
+    }
     // only objects
     if (typeof value === "object" && !Array.isArray(value)) {
       obj[key] = module.exports.removeNull(value)
@@ -27,20 +33,7 @@ module.exports.updateContext = obj => {
   if (obj.now == null) {
     obj.now = new Date().toISOString()
   }
-  function recurse(obj) {
-    for (let key of Object.keys(obj)) {
-      if (!obj[key]) {
-        continue
-      }
-      if (obj[key] instanceof Date) {
-        obj[key] = obj[key].toISOString()
-      } else if (typeof obj[key] === "object") {
-        obj[key] = recurse(obj[key])
-      }
-    }
-    return obj
-  }
-  return recurse(obj)
+  return obj
 }
 
 module.exports.removeHandlebarsStatements = string => {
