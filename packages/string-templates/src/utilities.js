@@ -11,31 +11,6 @@ module.exports.swapStrings = (string, start, length, swap) => {
   return string.slice(0, start) + swap + string.slice(start + length)
 }
 
-// removes null and undefined
-module.exports.removeNull = obj => {
-  if (!obj instanceof Date) {
-    obj = _(obj).omitBy(_.isUndefined).omitBy(_.isNull).value()
-  }
-  for (let [key, value] of Object.entries(obj)) {
-    if (value == null) {
-      delete obj[key]
-      continue
-    }
-    // only objects
-    if (typeof value === "object" && !Array.isArray(value)) {
-      obj[key] = module.exports.removeNull(value)
-    }
-  }
-  return obj
-}
-
-module.exports.updateContext = obj => {
-  if (obj.now == null) {
-    obj.now = new Date().toISOString()
-  }
-  return obj
-}
-
 module.exports.removeHandlebarsStatements = string => {
   let regexp = new RegExp(exports.FIND_HBS_REGEX)
   let matches = string.match(regexp)
