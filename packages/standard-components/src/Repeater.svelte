@@ -21,8 +21,8 @@
   {#if $component.empty}
     <Placeholder />
   {:else if rows.length > 0}
-    {#each rows as row}
-      <Provider data={row}>
+    {#each rows as row, idx}
+      <Provider data={{ ...row, __idx: idx + 1 }}>
         <slot />
       </Provider>
     {/each}

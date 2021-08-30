@@ -7,9 +7,10 @@
   const { styleable, builderStore } = getContext("sdk")
   const component = getContext("component")
   const formContext = getContext("form")
+  $: numericStep = step == null || isNaN(step) ? 1 : parseInt(step)
 
   // Set form step context so fields know what step they are within
-  setContext("form-step", step || 1)
+  setContext("form-step", numericStep)
 
   $: formState = formContext?.formState
   $: currentStep = $formState?.currentStep
@@ -21,14 +22,14 @@
       $builderStore.inBuilder &&
       $builderStore.selectedComponentPath?.includes($component.id)
     ) {
-      formContext.formApi.setStep(step)
+      formContext.formApi.setStep(numericStep)
     }
   }
 </script>
 
 {#if !formContext}
   <Placeholder text="Form steps need to be wrapped in a form" />
-{:else if step === currentStep}
+{:else if numericStep === currentStep}
   <div use:styleable={$component.styles}>
     <slot />
   </div>

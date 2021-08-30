@@ -486,9 +486,20 @@
         "defaultValue": "M"
       }
     ],
-    "context": {
-      "type": "schema"
-    }
+    "context": [
+      {
+        "type": "static",
+        "values": [
+          {
+            "label": "Item Number",
+            "key": "__idx"
+          }
+        ]
+      },
+      {
+        "type": "schema"
+      }
+    ]
   },
   "stackedlist": {
     "deprecated": true,
@@ -1764,11 +1775,10 @@
     "styles": ["size"],
     "settings": [
       {
-        "type": "number",
+        "type": "text",
         "label": "Step",
         "key": "step",
-        "defaultValue": 1,
-        "min": 1
+        "defaultValue": "1"
       }
     ]
   },
