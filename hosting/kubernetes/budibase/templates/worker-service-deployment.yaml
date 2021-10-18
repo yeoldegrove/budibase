@@ -70,15 +70,11 @@ spec:
               name: {{ template "budibase.fullname" . }}
               key: objectStoreSecret
         - name: MINIO_URL
-          {{ if .Values.services.objectStore.url }}
           value: {{ .Values.services.objectStore.url }}
-          {{ else }}
-          value: http://minio-service:{{ .Values.services.objectStore.port }}
-          {{ end }}
         - name: PORT
           value: {{ .Values.services.worker.port | quote }}
         - name: MULTI_TENANCY
-          value: {{ .Values.globals.multiTenancy | quote }}
+          value: "1"
         - name: REDIS_PASSWORD
           value: {{ .Values.services.redis.password | quote }}
         - name: REDIS_URL
