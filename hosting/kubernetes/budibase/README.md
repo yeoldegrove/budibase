@@ -4,8 +4,8 @@
 
 ## TL;DR;
 ```console
-$ cd chart
-$ helm install budibase .
+$ cd hosting/kubernetes/budibase 
+$ helm install budibase . -n budibase --create-namespace
 ```
 
 ## Introduction
@@ -23,17 +23,17 @@ This chart bootstraps a [Budibase](https://budibase.com/) deployment on a [Kuber
 To install the chart with the release name `budi-release`:
 
 ```console
-$ helm install budi-release .
+$ helm install budibase . -n budibase --create-namespace
 ```
 
-The command deploys Budibase on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+The command deploys Budibase on the Kubernetes cluster in the default configuration. The  [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `my-release` deployment:
+To uninstall/delete the  `budibase`  deployment:
 
 ```console
-$ helm delete my-release
+$ helm delete budibase -n budibase
 ```
