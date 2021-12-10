@@ -203,6 +203,9 @@ exports.fetchAppPackage = async ctx => {
 }
 
 exports.create = async ctx => {
+  if (!ctx.request.body || !ctx.request.body.name) {
+    ctx.throw(400, "Please provide an app name.")
+  }
   const { useTemplate, templateKey, templateString } = ctx.request.body
   const instanceConfig = {
     useTemplate,

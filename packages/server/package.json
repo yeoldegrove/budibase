@@ -21,6 +21,7 @@
     "dev:stack:down": "node scripts/dev/manage.js down",
     "dev:stack:nuke": "node scripts/dev/manage.js nuke",
     "dev:builder": "yarn run dev:stack:up && nodemon",
+    "dev:loadtest": "node scripts/dev/overload.js 50 default",
     "format": "prettier --config ../../.prettierrc.json 'src/**/*.ts' --write",
     "lint": "eslint --fix src/",
     "lint:fix": "yarn run format && yarn run lint",
