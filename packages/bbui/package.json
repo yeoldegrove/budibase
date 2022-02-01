@@ -16,11 +16,59 @@
   "scripts": {
     "build": "rollup -c"
   },
+  "jest": {
+    "globals": {
+      "GLOBALS": {
+        "client": "web"
+      }
+    },
+    "testURL": "http://jest-breaks-if-this-does-not-exist",
+    "moduleNameMapper": {
+      "^src/(.*)": "<rootDir>/src/$1",
+      "\\.(css|scss)$": "identity-obj-proxy",
+      "components(.*)$": "<rootDir>/src/components$1",
+      "builderStore(.*)$": "<rootDir>/src/builderStore$1",
+      "stores(.*)$": "<rootDir>/src/stores$1",
+      "analytics(.*)$": "<rootDir>/src/analytics$1",
+      "^@budibase/bbui$": "<rootDir>/node_modules/@budibase/bbui/src/index.js",
+      "^@budibase/string-templates": "<rootDir>/node_modules/@budibase/string-templates/src/index.js"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "mjs",
+      "svelte",
+      "css",
+      "scss",
+      "less"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src/node_module"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      "^.+\\.mjs$": "babel-jest",
+      "^.+\\.svelte$": "svelte-jester",
+      ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform"
+
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(@spectrum-css|svelte-portal)"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/cypress/"
+    ],
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-dom/extend-expect"
+    ]
+  },
   "devDependencies": {
+    "@babel/runtime": "^7.16.7",
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "cross-env": "^7.0.2",
+    "jest-css-modules-transform": "^4.3.0",
     "nollup": "^0.14.1",
     "postcss": "^8.2.9",
     "rollup": "^2.45.2",
@@ -79,6 +127,7 @@
     "@spectrum-css/underlay": "^2.0.9",
     "@spectrum-css/vars": "^3.0.1",
     "dayjs": "^1.10.4",
+    "identity-obj-proxy": "^3.0.0",
     "svelte-flatpickr": "^3.2.3",
     "svelte-portal": "^1.0.0"
   },

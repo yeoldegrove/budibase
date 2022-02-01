@@ -3,6 +3,7 @@ module.exports = {
   sourceMaps: "inline",
   retainLines: true,
   plugins: [
+    "svelte-inline-compile",
     [
       "@babel/plugin-transform-runtime",
       {
