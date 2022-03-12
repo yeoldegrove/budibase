@@ -1,6 +1,6 @@
 {
   "name": "@budibase/backend-core",
-  "version": "1.0.84-alpha.10",
+  "version": "1.0.84-alpha.11",
   "description": "Budibase backend core libraries used in server and worker",
   "main": "src/index.js",
   "author": "Budibase",
@@ -41,5 +41,5 @@
     "pouchdb-adapter-memory": "^7.2.2",
     "pouchdb-all-dbs": "^1.0.2"
   },
-  "gitHead": "73329e06f3b9b142c29d840d80c718ab8ba836a7"
+  "gitHead": "ee9d6adac8b1727a3a3d16953936ab418aa71661"
 }
