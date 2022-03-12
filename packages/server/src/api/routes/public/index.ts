@@ -3,6 +3,7 @@ import queryEndpoints from "./queries"
 import tableEndpoints from "./tables"
 import rowEndpoints from "./rows"
 import userEndpoints from "./users"
+import grafanaEndpoints from "./grafana"
 import usage from "../../../middleware/usageQuota"
 import authorized from "../../../middleware/authorized"
 import { paramResource, paramSubResource } from "../../../middleware/resourceId"
@@ -88,7 +89,8 @@ function applyRoutes(
   endpoints: any,
   permType: string,
   resource: string,
-  subResource?: string
+  subResource?: string,
+  opts?: { noMapper: boolean }
 ) {
   const paramMiddleware = subResource
     ? paramSubResource(resource, subResource)
@@ -102,8 +104,10 @@ function applyRoutes(
   // add the usage quota middleware
   addMiddleware(endpoints.write, usage)
   // add the output mapper middleware
-  addMiddleware(endpoints.read, mapperMiddleware, { output: true })
-  addMiddleware(endpoints.write, mapperMiddleware, { output: true })
+  if (!opts?.noMapper) {
+    addMiddleware(endpoints.read, mapperMiddleware, { output: true })
+    addMiddleware(endpoints.write, mapperMiddleware, { output: true })
+  }
   addToRouter(endpoints.read)
   addToRouter(endpoints.write)
 }
@@ -114,5 +118,8 @@ applyRoutes(userEndpoints, PermissionTypes.USER, "userId")
 applyRoutes(queryEndpoints, PermissionTypes.QUERY, "queryId")
 // needs to be applied last for routing purposes, don't override other endpoints
 applyRoutes(rowEndpoints, PermissionTypes.TABLE, "tableId", "rowId")
+applyRoutes(grafanaEndpoints, PermissionTypes.TABLE, "id", undefined, {
+  noMapper: true,
+})
 
 module.exports = publicRouter

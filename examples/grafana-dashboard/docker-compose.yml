@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   db:
-    container_name: nextjs-pg
+    container_name: grafana-pg
     image: postgres
     restart: always
     environment:
@@ -13,5 +13,14 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data/
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  grafana:
+    build:
+      context: ./grafana
+    container_name: grafana
+    ports:
+      - 3002:3002
+    volumes:
+      - grafana-data:/var/lib/grafana
 volumes:
   pg_data:
+  grafana-data:
