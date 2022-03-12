@@ -1,6 +1,6 @@
 {
   "name": "@budibase/client",
-  "version": "1.0.84-alpha.7",
+  "version": "1.0.84-alpha.8",
   "license": "MPL-2.0",
   "module": "dist/budibase-client.js",
   "main": "dist/budibase-client.js",
@@ -19,9 +19,9 @@
     "dev:builder": "rollup -cw"
   },
   "dependencies": {
-    "@budibase/bbui": "^1.0.84-alpha.7",
-    "@budibase/frontend-core": "^1.0.84-alpha.7",
-    "@budibase/string-templates": "^1.0.84-alpha.7",
+    "@budibase/bbui": "^1.0.84-alpha.8",
+    "@budibase/frontend-core": "^1.0.84-alpha.8",
+    "@budibase/string-templates": "^1.0.84-alpha.8",
     "@spectrum-css/button": "^3.0.3",
     "@spectrum-css/card": "^3.0.3",
     "@spectrum-css/divider": "^1.0.3",
@@ -54,5 +54,5 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-visualizer": "^5.5.4"
   },
-  "gitHead": "577897e12e02ef73acde27566e77ccea6308bcf8"
+  "gitHead": "7f5c94338114b245ea31c8662f885ba25f7b00e0"
 }

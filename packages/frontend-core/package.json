@@ -1,14 +1,14 @@
 {
   "name": "@budibase/frontend-core",
-  "version": "1.0.84-alpha.7",
+  "version": "1.0.84-alpha.8",
   "description": "Budibase frontend core libraries used in builder and client",
   "author": "Budibase",
   "license": "MPL-2.0",
   "svelte": "src/index.js",
   "dependencies": {
-    "@budibase/bbui": "^1.0.84-alpha.7",
+    "@budibase/bbui": "^1.0.84-alpha.8",
     "lodash": "^4.17.21",
     "svelte": "^3.46.2"
   },
-  "gitHead": "577897e12e02ef73acde27566e77ccea6308bcf8"
+  "gitHead": "7f5c94338114b245ea31c8662f885ba25f7b00e0"
 }
