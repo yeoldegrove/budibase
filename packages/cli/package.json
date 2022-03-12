@@ -1,6 +1,6 @@
 {
   "name": "@budibase/cli",
-  "version": "1.0.84-alpha.6",
+  "version": "1.0.84-alpha.7",
   "description": "Budibase CLI, for developers, self hosting and migrations.",
   "main": "src/index.js",
   "bin": {
@@ -33,5 +33,5 @@
   "devDependencies": {
     "eslint": "^7.20.0"
   },
-  "gitHead": "a73a6a76d2db91c36a6de35f3be6a94619e2a12a"
+  "gitHead": "577897e12e02ef73acde27566e77ccea6308bcf8"
 }

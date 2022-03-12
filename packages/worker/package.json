@@ -1,7 +1,7 @@
 {
   "name": "@budibase/worker",
   "email": "hi@budibase.com",
-  "version": "1.0.84-alpha.6",
+  "version": "1.0.84-alpha.7",
   "description": "Budibase background service",
   "main": "src/index.ts",
   "repository": {
@@ -34,8 +34,8 @@
   "author": "Budibase",
   "license": "GPL-3.0",
   "dependencies": {
-    "@budibase/backend-core": "^1.0.84-alpha.6",
-    "@budibase/string-templates": "^1.0.84-alpha.6",
+    "@budibase/backend-core": "^1.0.84-alpha.7",
+    "@budibase/string-templates": "^1.0.84-alpha.7",
     "@koa/router": "^8.0.0",
     "@sentry/node": "^6.0.0",
     "@techpass/passport-openidconnect": "^0.3.0",
@@ -88,5 +88,5 @@
       "./scripts/jestSetup.js"
     ]
   },
-  "gitHead": "a73a6a76d2db91c36a6de35f3be6a94619e2a12a"
+  "gitHead": "577897e12e02ef73acde27566e77ccea6308bcf8"
 }
